@@ -315,6 +315,25 @@ const RECIPES = [
     log: [
       { date: "2026-07-21", stars: 5, note: "Inducted as a long-standing classic — cooked more times than the log will ever know. Garlicky, tangy, absurdly tender off the grill. As written, no tweaks. Straight to Keeper." }
     ]
+  },
+  {
+    id: "coconut-fish-tomato-bake",
+    name: "Coconut Fish and Tomato Bake",
+    cuisine: "West African-inspired",
+    protein: "Fish",
+    time: 40,
+    timeNote: "incl. marinade",
+    effort: 2,
+    rating: 5,
+    status: "Keeper",
+    lastCooked: null,
+    timesCooked: 0,
+    serves: 4,
+    leftovers: "",
+    nextTime: "",
+    log: [
+      { date: "2026-07-21", stars: 5, note: "Inducted as a classic, already tuned to Etty's spec: double the garlic and ginger, half the honey, a full cup of coconut milk for more sauce, and tomatoes halved with a 10-minute head start so they go jammy instead of bursting. Usually tilapia. Straight to Keeper." }
+    ]
   }
 ];
 
@@ -559,6 +578,91 @@ const RECIPE_BODIES = {
     </ul>
 
     <p class="attr">From NYT Cooking (featured in "For the Juiciest Grilled Chicken, Just Add Yogurt"), reformatted into cook mode with the ingredient splits mapped up front; quantities as published.</p>
+  `,
+
+  "coconut-fish-tomato-bake": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+    <p class="tagline"><b>The sequencing trick:</b> the tomatoes' 10-minute head start happens during the back half of the fish's marinade — nothing waits on anything.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">2-inch piece fresh ginger</label>
+        <label><input type="checkbox">2 garlic cloves</label>
+        <label><input type="checkbox">2 limes</label>
+        <label><input type="checkbox">1 bunch cilantro (½ cup chopped, split)</label>
+        <label><input type="checkbox">2 pints cherry or grape tomatoes</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Seafood</div>
+        <label><input type="checkbox"><span>4 (6-oz) fillets tilapia — <em>or any white fish; salmon works too</em></span></label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">1 cup unsweetened coconut milk</label>
+        <label><input type="checkbox">Honey (1½ tsp)</label>
+        <label><input type="checkbox">Olive oil (3 tbsp)</label>
+        <label><input type="checkbox">Kosher salt</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Ground turmeric (½ tsp)</label>
+        <label><input type="checkbox">Red-pepper flakes (½ tsp)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">For serving</div>
+        <label><input type="checkbox">Steamed rice or a baguette to grill</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep</h3>
+    <ul class="plain">
+      <li><b>Ginger + garlic:</b> finely grate the 2-inch piece of ginger and both garlic cloves.</li>
+      <li><b>Cilantro:</b> chop ½ cup total — ¼ cup for the marinade, ¼ cup for serving.</li>
+      <li><b>Tomatoes:</b> halve them all. <em>(The point — halved tomatoes go jammy and feed the sauce instead of bursting whole.)</em></li>
+      <li><b>Racks:</b> one lower-middle, one closest to the broiler.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Marinade <span class="cue">(start this first)</span></h4>
+    <ol>
+      <li>In a large bowl, whisk together <b>1 cup unsweetened coconut milk</b>, the <b>grated ginger and garlic</b>, <b>½ tsp ground turmeric</b>, <b>½ tsp red-pepper flakes</b>, <b>1½ tsp honey</b>, and <b>1 tsp kosher salt</b>.</li>
+      <li><b>Zest and juice 1 lime</b> directly into the bowl. Stir in <b>¼ cup chopped cilantro</b>.</li>
+      <li>Add the <b>4 fish fillets</b> and turn to coat. Fridge, <b>15–30 minutes</b> — no longer, or the lime starts "cooking" the fish.</li>
+    </ol>
+
+    <h4>Step 2 — Tomatoes on <span class="cue">(while the fish marinates)</span></h4>
+    <ol>
+      <li>Heat the oven to <b>425°F</b>.</li>
+      <li>Pile the <b>halved tomatoes</b> onto a large sheet pan, drizzle with <b>2 tbsp olive oil</b>, season with <b>salt</b>, and toss.</li>
+      <li>About <b>10 minutes before the marinade is up</b>, slide the pan onto the lower-middle rack — the head start gets them collapsing and concentrating before the fish shows up.</li>
+    </ol>
+
+    <h4>Step 3 — Fish joins the party</h4>
+    <ol>
+      <li>Pull the pan out. Nestle the <b>marinated fillets</b> between the tomatoes, spoon <b>all the marinade</b> over the fish, and drizzle with the last <b>1 tbsp olive oil</b>.</li>
+      <li>Roast on the lower-middle rack <b>8–10 minutes</b>, until the surface is opaque but the center isn't done — it should <b>not</b> flake easily yet.</li>
+      <li>Remove the pan and heat the <b>broiler to high</b>.</li>
+    </ol>
+
+    <h4>Step 4 — Broil to finish</h4>
+    <ol>
+      <li>Move the pan to the broiler rack. Broil <b>5–6 minutes</b>, rotating once, until the fish flakes and the tomatoes brown in spots.</li>
+      <li>Meanwhile, slice the <b>second lime into wedges</b>.</li>
+    </ol>
+
+    <h4>Step 5 — Serve</h4>
+    <ol>
+      <li>Divide fish and tomatoes among plates and <b>tip the pan juices over the fish</b> — that silky turmeric-coconut sauce is the whole point.</li>
+      <li>Shower with the <b>remaining ¼ cup cilantro</b>; serve with <b>lime wedges</b>, over <b>rice</b> or with <b>grilled baguette</b> for sopping.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>The sauce scales with the coconut milk</b> — the full 1 cup (vs. the original ¾) is what makes it generous enough for rice.</li>
+      <li><b>Fish is flexible:</b> tilapia is the house default; snapper through salmon all work. Thicker fillets push both cook times to the top of their ranges.</li>
+      <li><b>Doneness insurance:</b> the roast-then-broil two-stage is forgiving — pull the roast early if in doubt; the broiler finishes the job.</li>
+      <li><b>Don't marinate past 30 minutes</b> — the lime is working on the fish the whole time.</li>
+    </ul>
+
+    <p class="attr">Adapted from Yewande Komolafe's Coconut Fish and Tomato Bake (NYT Cooking). Etty's changes: garlic and ginger doubled, honey halved, coconut milk up to 1 cup, tomatoes halved and given a 10-minute head start before the fish joins.</p>
   `
 };
 // ====================================================================
