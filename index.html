@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etty's Recipe Box</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --ink: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --accent: #2a78d6;
+    --accent-wash: rgba(42,120,214,0.07);
+    --star: #eda100;
+    --good: #0ca30c;
+    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 16px rgba(11,11,11,0.05);
+    --modal-shadow: 0 8px 40px rgba(11,11,11,0.25);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --page: #0d0d0d;
+      --ink: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --accent: #3987e5;
+      --accent-wash: rgba(57,135,229,0.12);
+      --star: #c98500;
+      --good: #0ca30c;
+      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
+      --modal-shadow: 0 8px 40px rgba(0,0,0,0.6);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--ink);
+    padding: 28px 24px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+
+  header.top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
+  .sub { color: var(--ink-2); font-size: 13.5px; margin: 0 0 22px; }
+  .sub .hint { color: var(--muted); }
+  kbd {
+    font-family: inherit; font-size: 11px; color: var(--ink-2);
+    border: 1px solid var(--baseline); border-bottom-width: 2px; border-radius: 5px;
+    padding: 0 5px; background: var(--surface-1);
+  }
+
+  /* ---- stat tiles ---- */
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 22px; }
+  .tile {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
+    padding: 14px 16px; box-shadow: var(--shadow);
+  }
+  .tile .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+  .tile .value { font-size: 28px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
+  .tile .note { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+
+  /* ---- filters ---- */
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; align-items: center; }
+  .filters select, .filters input[type="search"] {
+    font: inherit; font-size: 13px; color: var(--ink);
+    background: var(--surface-1); border: 1px solid var(--grid); border-radius: 10px;
+    padding: 7px 11px; box-shadow: var(--shadow);
+  }
+  .filters select:focus, .filters input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .filters input[type="search"] { min-width: 190px; }
+  .filters .clear { font-size: 12.5px; color: var(--accent); background: none; border: none; cursor: pointer; padding: 6px 4px; }
+  .count { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+  /* ---- table ---- */
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; padding: 13px 14px; white-space: nowrap; vertical-align: middle; }
+  th {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--muted); font-weight: 650; cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--baseline);
+  }
+  th:hover { color: var(--ink-2); }
+  th .arrow { font-size: 9px; margin-left: 3px; color: var(--accent); }
+  tbody tr { border-bottom: 1px solid var(--grid); cursor: pointer; transition: background 0.1s ease; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--accent-wash); }
+  td.num { font-variant-numeric: tabular-nums; }
+
+  .r-name { font-weight: 650; font-size: 14px; }
+  .r-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .stars { color: var(--star); font-size: 14px; letter-spacing: 1.5px; }
+  .stars .empty { color: var(--grid); }
+  .rating-num { font-size: 11.5px; color: var(--muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
+  .unrated { color: var(--muted); font-size: 12.5px; }
+  .badge {
+    display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px;
+    border-radius: 999px; border: 1px solid var(--baseline); color: var(--ink-2);
+  }
+  .badge.keeper { border-color: var(--good); color: var(--good); background: rgba(12,163,12,0.07); }
+  .badge.ready { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
+  .effort-dots { letter-spacing: 2.5px; color: var(--ink-2); font-size: 10px; }
+  .effort-dots .off { color: var(--grid); }
+  .open-btn {
+    font-size: 12px; font-weight: 600; color: var(--accent);
+    border: 1px solid var(--grid); background: none; border-radius: 8px;
+    padding: 5px 11px; cursor: pointer;
+  }
+  .open-btn:hover { background: var(--accent-wash); border-color: var(--accent); }
+  .empty-state { padding: 36px; text-align: center; color: var(--muted); font-size: 13px; }
+
+  /* ---- log-a-cook helper ---- */
+  .logbox {
+    margin-top: 16px; display: flex; gap: 12px; align-items: flex-start;
+    background: var(--surface-1); border: 1px dashed var(--baseline); border-radius: 14px;
+    padding: 14px 18px; font-size: 13px; color: var(--ink-2);
+  }
+  .logbox .emoji { font-size: 20px; line-height: 1.3; }
+  .logbox b { color: var(--ink); }
+  .logbox .example { color: var(--muted); font-style: italic; }
+
+  /* ---- recipe modal ---- */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(11,11,11,0.45);
+    display: none; align-items: flex-start; justify-content: center;
+    padding: 4vh 16px; z-index: 50;
+  }
+  .overlay.on { display: flex; }
+  .modal {
+    background: var(--surface-1); border-radius: 16px; box-shadow: var(--modal-shadow);
+    max-width: 720px; width: 100%; max-height: 92vh; overflow-y: auto;
+    border: 1px solid var(--border);
+  }
+  .modal-head {
+    position: sticky; top: 0; background: var(--surface-1); z-index: 2;
+    padding: 20px 26px 14px; border-bottom: 1px solid var(--grid);
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .modal-head h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
+  .modal-head .facts { font-size: 12.5px; color: var(--ink-2); }
+  .modal-head .facts b { font-weight: 650; }
+  .close {
+    margin-left: auto; flex-shrink: 0; border: none; background: var(--page); color: var(--ink-2);
+    width: 32px; height: 32px; border-radius: 999px; font-size: 15px; cursor: pointer;
+  }
+  .close:hover { background: var(--grid); }
+  .modal-body { padding: 10px 26px 28px; font-size: 14px; line-height: 1.6; color: var(--ink); }
+  .modal-body .tagline { font-style: italic; color: var(--ink-2); font-size: 13px; }
+  .modal-body h3 {
+    font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
+    margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--grid);
+  }
+  .modal-body h4 { font-size: 14.5px; margin: 20px 0 8px; }
+  .modal-body h4 .cue { font-weight: 500; color: var(--accent); font-size: 13px; }
+  .modal-body ol { padding-left: 22px; margin: 8px 0; }
+  .modal-body ol li { margin-bottom: 9px; }
+  .modal-body ul.plain { list-style: none; padding-left: 2px; margin: 8px 0; }
+  .modal-body ul.plain li { margin-bottom: 7px; }
+  .modal-body .shortcut { font-style: italic; color: var(--ink-2); font-size: 13px; }
+  .groc { columns: 2; column-gap: 28px; }
+  @media (max-width: 560px) { .groc { columns: 1; } }
+  .groc .gsec { break-inside: avoid; margin-bottom: 14px; }
+  .groc .gsec .gtitle { font-weight: 650; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; }
+  .groc label { display: flex; gap: 8px; align-items: baseline; font-size: 13px; margin-bottom: 5px; cursor: pointer; }
+  .groc input[type="checkbox"] { accent-color: var(--accent); }
+  .groc label:has(input:checked) { color: var(--muted); text-decoration: line-through; }
+  .attr { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 24px; }
+  .elog { margin-bottom: 14px; }
+  .elog-meta { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .elog-meta .stars { font-size: 12px; }
+  .elog-note { font-size: 13.5px; color: var(--ink-2); }
+  .modal-log {
+    margin-top: 26px; background: var(--accent-wash); border-radius: 12px;
+    padding: 12px 16px; font-size: 12.5px; color: var(--ink-2);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><h1>🍲 Etty's Recipe Box</h1></header>
+  <p class="sub">Part cookbook, part lab notebook — every recipe workshopped, cooked, and judged. <span class="hint">Double-click a recipe (or hit <b>Open</b>) to read it, Etty's log included.</span></p>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="filters" id="filters">
+    <input type="search" id="q" placeholder="Search recipes…">
+    <select id="f-cuisine"><option value="">All cuisines</option></select>
+    <select id="f-protein"><option value="">All proteins</option></select>
+    <select id="f-status"><option value="">All statuses</option></select>
+    <select id="f-effort">
+      <option value="">Any effort</option>
+      <option value="1">Effort ≤ 1</option>
+      <option value="2">Effort ≤ 2</option>
+      <option value="3">Effort ≤ 3</option>
+      <option value="4">Effort ≤ 4</option>
+      <option value="5">Effort ≤ 5</option>
+    </select>
+    <select id="f-time">
+      <option value="">Any time</option>
+      <option value="30">≤ 30 min</option>
+      <option value="45">≤ 45 min</option>
+      <option value="60">≤ 60 min</option>
+      <option value="90">≤ 90 min</option>
+    </select>
+    <button class="clear" id="clear">Clear</button>
+    <span class="count" id="count"></span>
+  </div>
+
+  <div class="card">
+    <div class="scroll">
+      <table id="tbl">
+        <thead><tr id="head"></tr></thead>
+        <tbody id="body"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="empty" style="display:none">No recipes match — clear a filter or two.</div>
+  </div>
+
+  <div class="logbox">
+    <div class="emoji">✍️</div>
+    <div>
+      <b>Welcome to Etty’s recipe box</b> — nothing gets stars Etty didn’t earn at the stove.<br>
+      <span class="example">This page updates as the experiments continue. Made one of these? Tell Etty how it went.</span>
+    </div>
+  </div>
+</div>
+
+<!-- recipe modal -->
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div>
+        <h2 id="m-title"></h2>
+        <div class="facts" id="m-facts"></div>
+      </div>
+      <button class="close" id="m-close" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA — mirrors recipes/_index.md. Update both together. =====
+const RECIPES = [
+  {
+    id: "caldo-de-pollo-con-arroz",
+    name: "Caldo de Pollo con Arroz",
+    cuisine: "Mexican",
+    protein: "Chicken",
+    time: 60,
+    effort: 3,
+    rating: 5,
+    status: "Cooked & rated",
+    lastCooked: "2026-07-20",
+    timesCooked: 1,
+    serves: 6,
+    leftovers: "Great (store rice separately)",
+    nextTime: "",
+    log: [
+      { date: "2026-07-20", stars: 5, note: "First cook, full five stars. Timing held at ~60 min on the nose, effort 3 felt right, and the leftovers reheated beautifully with the rice stored separately. Only note: could've used a little more chicken — recipe's been bumped to 2 lb for good. Sleeper hit: the rice." }
+    ]
+  },
+  {
+    id: "spanish-basmati-rice",
+    name: "Spanish Basmati Rice",
+    cuisine: "Mexican",
+    protein: "Veg (side)",
+    time: 35,
+    effort: 1,
+    rating: 5,
+    status: "Keeper",
+    lastCooked: "2026-07-21",
+    timesCooked: 2,
+    serves: "4–6",
+    leftovers: "Great (sprinkle water to reheat)",
+    nextTime: "",
+    log: [
+      { date: "2026-07-20", stars: 5, note: "Cooked inside the caldo. Incredible — good enough that it got promoted to its own recipe on the spot." },
+      { date: "2026-07-21", stars: 5, note: "Made it again this morning, standalone this time. Just incredible. Two five-star cooks in two days — that's a Keeper." }
+    ]
+  }
+];
+
+// Full cook-mode recipe bodies, keyed by id. Mirrors recipes/<id>.md.
+const RECIPE_BODIES = {
+  "caldo-de-pollo-con-arroz": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">2 yellow onions</label>
+        <label><input type="checkbox">1 head garlic (need 10–12 cloves)</label>
+        <label><input type="checkbox">3 Roma tomatoes</label>
+        <label><input type="checkbox">1 jalapeño</label>
+        <label><input type="checkbox">1 rib celery</label>
+        <label><input type="checkbox">1–2 avocados</label>
+        <label><input type="checkbox">1 bunch green onions</label>
+        <label><input type="checkbox">1 bunch cilantro</label>
+        <label><input type="checkbox">2 limes</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
+        <label><input type="checkbox"><span>2 lb bone-in, skin-on chicken thighs (about 5–6) — <em>or 1⅓ lb rotisserie meat</em></span></label>
+        <label><input type="checkbox">Sour cream</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">Extra-virgin olive oil (¼ cup total)</label>
+        <label><input type="checkbox">1 cup basmati rice</label>
+        <label><input type="checkbox">¼ cup tomato sauce (1 small can)</label>
+        <label><input type="checkbox">Low-sodium chicken broth — 9½ cups total</label>
+        <label><input type="checkbox">Kosher salt</label>
+        <label><input type="checkbox">Habanero hot sauce</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Ground cumin (1 tsp)</label>
+        <label><input type="checkbox">Mexican oregano (1 tsp)</label>
+        <label><input type="checkbox">2 bay leaves</label>
+        <label><input type="checkbox">Onion powder (1½ tsp)</label>
+        <label><input type="checkbox">Garlic powder (1 tsp)</label>
+        <label><input type="checkbox">Dried parsley (2 tsp)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Optional for serving</div>
+        <label><input type="checkbox">Tortillas</label>
+        <label><input type="checkbox">Jack cheese</label>
+        <label><input type="checkbox">Tortilla chips</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep</h3>
+    <ul class="plain">
+      <li><b>Onions:</b> halve both. Set aside one half whole (poach), slice one half into thick rounds (charring), and finely mince ¼ cup from the rest (rice).</li>
+      <li><b>Garlic:</b> smash and peel 2 cloves (poach); leave 6–8 cloves unpeeled (charring).</li>
+      <li><b>Celery:</b> finely mince ¼ cup (about 1 rib).</li>
+      <li><b>Jalapeño:</b> cut 4 thin slices, flick out the seeds.</li>
+      <li><b>Rice:</b> measure 1 cup basmati into a fine-mesh strainer, ready to rinse.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Poach the chicken <span class="cue">(start this first)</span></h4>
+    <ol>
+      <li>In a large pot, combine <b>8 cups low-sodium chicken broth</b>, <b>2 lb bone-in skin-on chicken thighs</b> (about 5–6), <b>½ yellow onion</b> (left whole), <b>2 garlic cloves, smashed and peeled</b>, <b>2 bay leaves</b>, and <b>1½ tsp kosher salt</b>.</li>
+      <li>Bring to a bare simmer — don't boil, or the chicken toughens. Poach gently, partially covered, <b>20–25 minutes</b>, until the chicken hits 175°F and pulls apart easily. Skim foam as it rises.</li>
+      <li>Transfer the chicken to a plate. Fish out and discard the onion, garlic, and bay leaves; keep the broth warm. Once cool enough to handle, discard skin and bones and shred the meat. Don't add it back yet.</li>
+      <li class="shortcut">Rotisserie shortcut: skip the poach — simmer the same aromatics in the broth 15 minutes, discard them, and add 1⅓ lb shredded rotisserie meat in Step 4.</li>
+    </ol>
+
+    <h4>Step 2 — Spanish basmati rice <span class="cue">(while the chicken poaches)</span></h4>
+    <ol>
+      <li>Rinse <b>1 cup basmati rice</b> under cold water until the water runs clear.</li>
+      <li>Heat <b>2 tbsp olive or avocado oil</b> in a saucepan over medium. Cook <b>¼ cup finely minced yellow onion</b> and <b>¼ cup finely minced celery</b> for 2 minutes, then stir in the rice and toast <b>2–3 minutes</b>, until lightly golden and fragrant.</li>
+      <li>Stir in <b>¼ cup tomato sauce</b>, <b>1½ tsp onion powder</b>, <b>1 tsp garlic powder</b>, <b>2 tsp dried parsley</b>, and <b>½ tsp kosher salt</b>.</li>
+      <li>Add <b>1½ cups low-sodium chicken broth</b>, bring to a boil, then cover and simmer on low <b>15 minutes</b>, until the liquid is absorbed.</li>
+      <li>Off heat, steam with the lid on <b>10 minutes</b>, then fluff with a fork.</li>
+    </ol>
+
+    <h4>Step 3 — Char and fry the tomato base <span class="cue">(while everything simmers)</span></h4>
+    <ol>
+      <li>Set <b>3 whole Roma tomatoes</b>, <b>½ yellow onion in thick slices</b>, and <b>6–8 unpeeled garlic cloves</b> in a dry skillet over high heat (or under the broiler). Turn occasionally until blackened in spots and softened, <b>8–10 minutes</b>. Peel the garlic.</li>
+      <li>Blend the charred vegetables with <b>4 thin jalapeño slices (seeded)</b> and a splash of the poaching broth until smooth.</li>
+      <li>Wipe out the skillet, heat <b>2 tbsp extra-virgin olive oil</b> over medium-high, and pour in the purée — it should sizzle hard. Fry, stirring, <b>4–5 minutes</b> until it darkens and thickens. Stir in <b>1 tsp ground cumin</b> and <b>1 tsp Mexican oregano</b> for the last 30 seconds.</li>
+    </ol>
+
+    <h4>Step 4 — Bring it together</h4>
+    <ol>
+      <li>Stir the fried tomato base into the pot of warm broth. Simmer, uncovered, <b>10 minutes</b>.</li>
+      <li>Add the shredded chicken and heat through, about <b>5 minutes</b> — no longer, so it stays juicy.</li>
+      <li>Off heat, stir in the <b>juice of 1 lime</b>. Taste and adjust salt — it likely needs another pinch or two.</li>
+    </ol>
+
+    <h4>Step 5 — Serve</h4>
+    <ol>
+      <li>Spoon <b>¼ cup Spanish basmati rice</b> into each bowl and ladle the soup over.</li>
+      <li>Top each bowl with <b>sliced avocado</b>, <b>a dollop of sour cream</b>, <b>sliced green onions</b>, <b>chopped cilantro</b>, and <b>a few drops of habanero hot sauce</b>.</li>
+      <li>Serve with <b>lime wedges</b> and warm tortillas, Jack cheese, or tortilla chips.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>Store rice and soup separately</b> — basmati soaks up broth fast and goes soft if stored together.</li>
+      <li><b>Reheating:</b> warm the soup, then add rice for the last minute or two.</li>
+      <li><b>More heat?</b> Blend in extra jalapeño (or leave the seeds in), or char a serrano alongside the tomatoes.</li>
+      <li><b>Deeper broth:</b> if you have time, drop the stripped thigh bones back into the pot for the Step 4 simmer, then remove.</li>
+      <li><b>Salt in stages:</b> the poach, the rice, and the final taste-and-adjust each get their own — that's what makes it taste seasoned, not salty.</li>
+    </ul>
+
+    <p class="attr">Inspired by a recipe from The Harvest Kitchen, upgraded with a traditional caldo-style fried tomato base and broth-poached chicken.</p>
+  `,
+
+  "spanish-basmati-rice": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">1 small yellow onion (need ¼ cup minced)</label>
+        <label><input type="checkbox">1 rib celery</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">1 cup basmati rice</label>
+        <label><input type="checkbox">¼ cup tomato sauce (1 small can)</label>
+        <label><input type="checkbox">1½ cups low-sodium chicken broth</label>
+        <label><input type="checkbox">Olive or avocado oil (2 tbsp)</label>
+        <label><input type="checkbox">Kosher salt</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Onion powder (1½ tsp)</label>
+        <label><input type="checkbox">Garlic powder (1 tsp)</label>
+        <label><input type="checkbox">Dried parsley (2 tsp)</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 2-minute prep</h3>
+    <ul class="plain">
+      <li><b>Onion:</b> finely mince ¼ cup.</li>
+      <li><b>Celery:</b> finely mince ¼ cup (about 1 rib).</li>
+      <li><b>Rice:</b> measure 1 cup basmati into a fine-mesh strainer.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Rinse and toast</h4>
+    <ol>
+      <li>Rinse <b>1 cup basmati rice</b> under cold water until the water runs clear.</li>
+      <li>Heat <b>2 tbsp olive or avocado oil</b> in a saucepan over medium. Cook <b>¼ cup finely minced yellow onion</b> and <b>¼ cup finely minced celery</b> for 2 minutes, then stir in the rice and toast <b>2–3 minutes</b>, until lightly golden and fragrant — the toast is where the flavor comes from, don't rush it.</li>
+    </ol>
+
+    <h4>Step 2 — Season and simmer</h4>
+    <ol>
+      <li>Stir in <b>¼ cup tomato sauce</b>, <b>1½ tsp onion powder</b>, <b>1 tsp garlic powder</b>, <b>2 tsp dried parsley</b>, and <b>½ tsp kosher salt</b>.</li>
+      <li>Add <b>1½ cups low-sodium chicken broth</b>, bring to a boil, then cover and simmer on low <b>15 minutes</b>, until the liquid is absorbed.</li>
+    </ol>
+
+    <h4>Step 3 — Steam and fluff</h4>
+    <ol>
+      <li>Off heat, steam with the lid on <b>10 minutes</b> — don't peek; the steam finishes the grains.</li>
+      <li>Fluff with a fork and serve.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>Born in the caldo:</b> this is the rice from the Caldo de Pollo con Arroz — spoon ¼ cup into each bowl and ladle the soup over.</li>
+      <li><b>Vegetarian:</b> swap the chicken broth for vegetable broth, or water plus ½ tsp bouillon.</li>
+      <li><b>Reheating:</b> sprinkle a spoonful of water over, cover, and microwave — the steam brings it back.</li>
+      <li><b>Scaling up:</b> rice-to-liquid ratio is 1 : 1½; hold the toast time steady and it doubles cleanly in a wider pan.</li>
+    </ul>
+
+    <p class="attr">Broken out from the Caldo de Pollo con Arroz after its first cook made it clear the rice deserved its own page.</p>
+  `
+};
+// ====================================================================
+
+const COLS = [
+  { key: "name",       label: "Recipe",      type: "str" },
+  { key: "time",       label: "Time",        type: "num" },
+  { key: "effort",     label: "Effort",      type: "num" },
+  { key: "rating",     label: "Etty Rating", type: "num" },
+  { key: "status",     label: "Status",      type: "status" },
+  { key: "lastCooked", label: "Last cooked", type: "date" },
+  { key: "timesCooked",label: "Cooks",       type: "num" },
+  { key: "_open",      label: "",            type: "none" }
+];
+const STATUS_ORDER = ["Workshopping", "Ready to cook", "Cooked & rated", "Keeper"];
+let sortKey = "rating", sortDir = -1;
+
+function stars(r) {
+  if (r == null) return '<span class="unrated">awaiting the Etty treatment</span>';
+  const full = Math.floor(r), half = r % 1 >= 0.5;
+  const rest = 5 - full - (half ? 1 : 0);
+  return '<span class="stars">' + "★".repeat(full) + (half ? "½" : "") +
+    '<span class="empty">' + "★".repeat(rest) + '</span></span>' +
+    '<span class="rating-num">' + r.toFixed(1) + "</span>";
+}
+function effortDots(e) {
+  return '<span class="effort-dots" title="Effort ' + e + ' of 5">' +
+    "●".repeat(e) + '<span class="off">' + "●".repeat(5 - e) + "</span></span>";
+}
+function statusBadge(s) {
+  const cls = s === "Keeper" ? "keeper" : s === "Ready to cook" ? "ready" : "";
+  return '<span class="badge ' + cls + '">' + (s === "Keeper" ? "Keeper 🏅" : s) + "</span>";
+}
+function fmtDate(d) {
+  if (!d) return '<span class="unrated">—</span>';
+  return new Date(d + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+}
+function esc(t){ const d=document.createElement("div"); d.textContent=t??""; return d.innerHTML; }
+
+function buildFilters() {
+  const fill = (id, vals) => {
+    const sel = document.getElementById(id);
+    [...new Set(vals)].sort().forEach(v => {
+      const o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o);
+    });
+  };
+  fill("f-cuisine", RECIPES.map(r => r.cuisine));
+  fill("f-protein", RECIPES.map(r => r.protein));
+  const ss = document.getElementById("f-status");
+  STATUS_ORDER.filter(s => RECIPES.some(r => r.status === s)).forEach(s => {
+    const o = document.createElement("option"); o.value = s; o.textContent = s; ss.appendChild(o);
+  });
+}
+
+function filtered() {
+  const q = document.getElementById("q").value.toLowerCase();
+  const c = document.getElementById("f-cuisine").value;
+  const p = document.getElementById("f-protein").value;
+  const s = document.getElementById("f-status").value;
+  const e = document.getElementById("f-effort").value;
+  const t = document.getElementById("f-time").value;
+  return RECIPES.filter(r =>
+    (!q || (r.name + " " + r.cuisine + " " + r.protein + " " + (r.nextTime||"")).toLowerCase().includes(q)) &&
+    (!c || r.cuisine === c) && (!p || r.protein === p) && (!s || r.status === s) &&
+    (!e || r.effort <= +e) && (!t || r.time <= +t)
+  );
+}
+
+function render() {
+  const head = document.getElementById("head");
+  head.innerHTML = COLS.map(col =>
+    '<th data-key="' + col.key + '">' + col.label +
+    (sortKey === col.key ? '<span class="arrow">' + (sortDir === 1 ? "▲" : "▼") + "</span>" : "") + "</th>"
+  ).join("");
+  head.querySelectorAll("th").forEach(th => th.onclick = () => {
+    const k = th.dataset.key;
+    const col = COLS.find(c => c.key === k);
+    if (col.type === "none") return;
+    if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = col.type === "str" ? 1 : -1; }
+    render();
+  });
+
+  const col = COLS.find(c => c.key === sortKey);
+  const rows = filtered().sort((a, b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (col.type === "status") { av = STATUS_ORDER.indexOf(av); bv = STATUS_ORDER.indexOf(bv); }
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (col.type === "str") return String(av).localeCompare(String(bv)) * sortDir;
+    if (col.type === "date") return (new Date(av) - new Date(bv)) * sortDir;
+    return (av - bv) * sortDir;
+  });
+
+  document.getElementById("body").innerHTML = rows.map(r =>
+    '<tr data-id="' + r.id + '" title="Double-click to open recipe">' +
+    "<td><div class='r-name'>" + esc(r.name) + "</div><div class='r-meta'>" +
+      esc(r.cuisine) + " · " + esc(r.protein) + " · serves " + r.serves + "</div></td>" +
+    '<td class="num">' + r.time + " min</td>" +
+    "<td>" + effortDots(r.effort) + "</td>" +
+    "<td>" + stars(r.rating) + "</td>" +
+    "<td>" + statusBadge(r.status) + "</td>" +
+    '<td class="num">' + fmtDate(r.lastCooked) + "</td>" +
+    '<td class="num">' + r.timesCooked + "</td>" +
+    '<td><button class="open-btn" data-open="' + r.id + '">Open</button></td>' +
+    "</tr>"
+  ).join("");
+
+  document.getElementById("body").querySelectorAll("tr").forEach(tr => {
+    tr.addEventListener("dblclick", () => openRecipe(tr.dataset.id));
+  });
+  document.getElementById("body").querySelectorAll("[data-open]").forEach(btn => {
+    btn.addEventListener("click", ev => { ev.stopPropagation(); openRecipe(btn.dataset.open); });
+  });
+
+  document.getElementById("empty").style.display = rows.length ? "none" : "block";
+  document.getElementById("tbl").style.display = rows.length ? "" : "none";
+  document.getElementById("count").textContent = rows.length + " of " + RECIPES.length + " recipe" + (RECIPES.length === 1 ? "" : "s");
+
+  const rated = RECIPES.filter(r => r.rating != null);
+  const avg = rated.length ? (rated.reduce((s, r) => s + r.rating, 0) / rated.length).toFixed(1) : "—";
+  const keepers = RECIPES.filter(r => r.status === "Keeper").length;
+  const totalCooks = RECIPES.reduce((s, r) => s + r.timesCooked, 0);
+  document.getElementById("tiles").innerHTML =
+    tile("Recipes", RECIPES.length, "in the library") +
+    tile("Keepers", keepers, "proven & in rotation") +
+    tile("Avg Etty Rating", avg, rated.length ? "across " + rated.length + " rated" : "no cooks rated yet") +
+    tile("Cooks logged", totalCooks, "experiments so far");
+}
+function tile(label, value, note) {
+  return '<div class="tile"><div class="label">' + label + '</div><div class="value">' + value + '</div><div class="note">' + note + "</div></div>";
+}
+
+function openRecipe(id) {
+  const r = RECIPES.find(x => x.id === id);
+  const body = RECIPE_BODIES[id];
+  if (!r || !body) return;
+  document.getElementById("m-title").textContent = r.name;
+  document.getElementById("m-facts").innerHTML =
+    "Serves <b>" + r.serves + "</b> · <b>" + r.time + " min</b> total · effort " + effortDots(r.effort) +
+    " · " + statusBadge(r.status) + (r.rating != null ? " · " + stars(r.rating) : "");
+  let logHtml = "";
+  if (r.log && r.log.length) {
+    logHtml = "<h3>📓 Etty's log</h3>" + r.log.slice().reverse().map(e =>
+      '<div class="elog"><div class="elog-meta">' + fmtDate(e.date) +
+      ' · <span class="stars">' + "★".repeat(e.stars) + "</span></div>" +
+      '<div class="elog-note">' + esc(e.note) + "</div></div>"
+    ).join("");
+  }
+  document.getElementById("m-body").innerHTML = body + logHtml +
+    '<div class="modal-log">🍳 <b>Made it?</b> Tell Etty how it went — every cook here gets logged, and the recipes keep evolving.</div>';
+  document.getElementById("overlay").classList.add("on");
+  document.querySelector(".modal").scrollTop = 0;
+}
+function closeRecipe() { document.getElementById("overlay").classList.remove("on"); }
+
+document.getElementById("m-close").addEventListener("click", closeRecipe);
+document.getElementById("overlay").addEventListener("click", ev => { if (ev.target === document.getElementById("overlay")) closeRecipe(); });
+document.addEventListener("keydown", ev => { if (ev.key === "Escape") closeRecipe(); });
+
+buildFilters();
+["q","f-cuisine","f-protein","f-status","f-effort","f-time"].forEach(id =>
+  document.getElementById(id).addEventListener("input", render));
+document.getElementById("clear").onclick = () => {
+  ["q","f-cuisine","f-protein","f-status","f-effort","f-time"].forEach(id => document.getElementById(id).value = "");
+  render();
+};
+render();
+</script>
+</body>
+</html>
