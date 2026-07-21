@@ -274,7 +274,8 @@ const RECIPES = [
     leftovers: "Great (store rice separately)",
     nextTime: "",
     log: [
-      { date: "2026-07-20", stars: 5, note: "First cook, full five stars. Timing held at ~60 min on the nose, effort 3 felt right, and the leftovers reheated beautifully with the rice stored separately. Only note: could've used a little more chicken — recipe's been bumped to 2 lb for good. Sleeper hit: the rice." }
+      { date: "2026-07-20", stars: 5, note: "First cook, full five stars. Timing held at ~60 min on the nose, effort 3 felt right, and the leftovers reheated beautifully with the rice stored separately. Sleeper hit: the rice." },
+      { date: "2026-07-21", stars: 0, note: "Correction: thought it needed more chicken, but only ~1.3 lb actually went in the pot. The listed 1½ lb (about 4 thighs) is right — weigh it and it sings." }
     ]
   },
   {
@@ -317,7 +318,7 @@ const RECIPE_BODIES = {
         <label><input type="checkbox">2 limes</label>
       </div>
       <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
-        <label><input type="checkbox"><span>2 lb bone-in, skin-on chicken thighs (about 5–6) — <em>or 1⅓ lb rotisserie meat</em></span></label>
+        <label><input type="checkbox"><span>1½ lb bone-in, skin-on chicken thighs (about 4) — <em>weigh it! · or 1 lb rotisserie meat</em></span></label>
         <label><input type="checkbox">Sour cream</label>
       </div>
       <div class="gsec"><div class="gtitle">Pantry</div>
@@ -356,10 +357,10 @@ const RECIPE_BODIES = {
 
     <h4>Step 1 — Poach the chicken <span class="cue">(start this first)</span></h4>
     <ol>
-      <li>In a large pot, combine <b>8 cups low-sodium chicken broth</b>, <b>2 lb bone-in skin-on chicken thighs</b> (about 5–6), <b>½ yellow onion</b> (left whole), <b>2 garlic cloves, smashed and peeled</b>, <b>2 bay leaves</b>, and <b>1½ tsp kosher salt</b>.</li>
+      <li>In a large pot, combine <b>8 cups low-sodium chicken broth</b>, <b>1½ lb bone-in skin-on chicken thighs</b> (about 4), <b>½ yellow onion</b> (left whole), <b>2 garlic cloves, smashed and peeled</b>, <b>2 bay leaves</b>, and <b>1½ tsp kosher salt</b>.</li>
       <li>Bring to a bare simmer — don't boil, or the chicken toughens. Poach gently, partially covered, <b>20–25 minutes</b>, until the chicken hits 175°F and pulls apart easily. Skim foam as it rises.</li>
       <li>Transfer the chicken to a plate. Fish out and discard the onion, garlic, and bay leaves; keep the broth warm. Once cool enough to handle, discard skin and bones and shred the meat. Don't add it back yet.</li>
-      <li class="shortcut">Rotisserie shortcut: skip the poach — simmer the same aromatics in the broth 15 minutes, discard them, and add 1⅓ lb shredded rotisserie meat in Step 4.</li>
+      <li class="shortcut">Rotisserie shortcut: skip the poach — simmer the same aromatics in the broth 15 minutes, discard them, and add 1 lb shredded rotisserie meat in Step 4.</li>
     </ol>
 
     <h4>Step 2 — Spanish basmati rice <span class="cue">(while the chicken poaches)</span></h4>
@@ -608,7 +609,7 @@ function openRecipe(id) {
   if (r.log && r.log.length) {
     logHtml = "<h3>📓 Etty's log</h3>" + r.log.slice().reverse().map(e =>
       '<div class="elog"><div class="elog-meta">' + fmtDate(e.date) +
-      ' · <span class="stars">' + "★".repeat(e.stars) + "</span></div>" +
+      (e.stars ? ' · <span class="stars">' + "★".repeat(e.stars) + "</span>" : "") + "</div>" +
       '<div class="elog-note">' + esc(e.note) + "</div></div>"
     ).join("");
   }
