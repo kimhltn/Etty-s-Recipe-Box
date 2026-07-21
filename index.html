@@ -296,6 +296,25 @@ const RECIPES = [
       { date: "2026-07-20", stars: 5, note: "Cooked inside the caldo. Incredible — good enough that it got promoted to its own recipe on the spot." },
       { date: "2026-07-21", stars: 5, note: "Made it again this morning, standalone this time. Just incredible. Two five-star cooks in two days — that's a Keeper." }
     ]
+  },
+  {
+    id: "yogurt-zaatar-grilled-chicken",
+    name: "Yogurt Za'atar Grilled Chicken",
+    cuisine: "Middle Eastern",
+    protein: "Chicken",
+    time: 30,
+    timeNote: "+2 hr marinade",
+    effort: 2,
+    rating: 5,
+    status: "Keeper",
+    lastCooked: null,
+    timesCooked: 0,
+    serves: "4–6",
+    leftovers: "",
+    nextTime: "",
+    log: [
+      { date: "2026-07-21", stars: 5, note: "Inducted as a long-standing classic — cooked more times than the log will ever know. Garlicky, tangy, absurdly tender off the grill. As written, no tweaks. Straight to Keeper." }
+    ]
   }
 ];
 
@@ -464,6 +483,82 @@ const RECIPE_BODIES = {
     </ul>
 
     <p class="attr">Broken out from the Caldo de Pollo con Arroz after its first cook made it clear the rice deserved its own page.</p>
+  `,
+
+  "yogurt-zaatar-grilled-chicken": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+    <p class="tagline"><b>Plan ahead:</b> mix the marinade at breakfast or lunch (needs 2+ hours, up to overnight) and dinner is a 30-minute job.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">1 head garlic (need 6 cloves)</label>
+        <label><input type="checkbox">2 lemons</label>
+        <label><input type="checkbox">1 bunch cilantro (¼ cup chopped + sprigs)</label>
+        <label><input type="checkbox">Fresh oregano or marjoram (1 tbsp + sprigs)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
+        <label><input type="checkbox">2¼ lb boneless, skinless chicken thighs</label>
+        <label><input type="checkbox">1 cup plain whole-milk yogurt</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">Extra-virgin olive oil (3 tbsp + more for serving)</label>
+        <label><input type="checkbox">Kosher salt</label>
+        <label><input type="checkbox">Black pepper</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Za'atar (1½ tbsp + more for serving)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Optional for serving</div>
+        <label><input type="checkbox">Pita or flatbread</label>
+        <label><input type="checkbox">Cucumbers + tomatoes (big salad alongside)</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep</h3>
+    <p style="font-size:13px">This recipe is all about <b>splits</b> — almost everything divides between marinade and sauce. Sort them now and the rest is easy:</p>
+    <ul class="plain">
+      <li><b>Garlic:</b> grate or press all 6 cloves. <b>5 for the marinade, 1 aside for the sauce.</b></li>
+      <li><b>Lemons:</b> zest both. <b>Half the zest to the marinade, half aside for the sauce.</b> Keep one zested lemon for serving; the spare goes back in the fridge.</li>
+      <li><b>Yogurt:</b> measure 1 cup. <b>⅓ cup to the marinade, ⅔ cup aside for the sauce.</b></li>
+      <li><b>Herbs:</b> chop ¼ cup cilantro and 1 tbsp oregano or marjoram; save whole sprigs for garnish.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Marinate <span class="cue">(morning of — needs 2+ hours)</span></h4>
+    <ol>
+      <li>In a large bowl, stir together <b>5 grated garlic cloves</b>, <b>half the lemon zest</b>, <b>⅓ cup yogurt</b>, <b>¼ cup chopped cilantro</b>, <b>3 tbsp extra-virgin olive oil</b>, <b>1½ tbsp za'atar</b>, <b>1 tbsp chopped oregano or marjoram</b>, <b>1¾ tsp kosher salt</b>, and <b>¼ tsp black pepper</b>.</li>
+      <li>Add <b>2¼ lb boneless, skinless chicken thighs</b> and toss until every piece is coated. Cover and refrigerate <b>at least 2 hours</b>, up to overnight — longer deepens the flavor, but even 2 hours delivers.</li>
+    </ol>
+
+    <h4>Step 2 — Grill</h4>
+    <ol>
+      <li>Light the grill to <b>medium</b>. Pull the chicken from the bowl, shaking off the excess marinade — clinging yogurt steams and scorches before the meat chars.</li>
+      <li>Grill the first side until charred in spots, <b>5–8 minutes</b>. Flip and grill <b>another 5–8 minutes</b>, until just cooked through — <b>165°F</b> at the thickest point.</li>
+      <li class="shortcut">Broiler alternate (rainy day): rack 3 inches from the element, foil-lined sheet pan — foil, not parchment, which can burn — same times, same flip.</li>
+    </ol>
+
+    <h4>Step 3 — Yogurt sauce <span class="cue">(while the chicken grills)</span></h4>
+    <ol>
+      <li>Stir together the <b>reserved ⅔ cup yogurt</b>, <b>reserved grated garlic clove</b>, and <b>reserved lemon zest</b>. Season to taste with <b>salt and pepper</b>.</li>
+      <li>Cut the zested lemon in half, ready for serving.</li>
+    </ol>
+
+    <h4>Step 4 — Serve</h4>
+    <ol>
+      <li>Pile the chicken on a platter. Drizzle with <b>olive oil</b> and add a <b>big squeeze of the zested lemon</b>.</li>
+      <li>Scatter over the <b>herb sprigs</b> and a <b>pinch more za'atar</b>. Serve with the <b>yogurt sauce</b>, warm <b>pita</b>, and a <b>big cucumber-tomato salad</b>.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>Chicken breasts work too</b> — they cook faster than thighs; watch them closely.</li>
+      <li><b>The marinade window is forgiving:</b> 2 hours minimum, overnight max. Yogurt tenderizes without the mushiness citrus-heavy marinades cause.</li>
+      <li><b>Char in spots is flavor,</b> not a mistake. Pull at 165°F — thighs stay juicy where breasts would punish you.</li>
+    </ul>
+
+    <p class="attr">From NYT Cooking (featured in "For the Juiciest Grilled Chicken, Just Add Yogurt"), reformatted into cook mode with the ingredient splits mapped up front; quantities as published.</p>
   `
 };
 // ====================================================================
@@ -562,7 +657,7 @@ function render() {
     '<tr data-id="' + r.id + '" title="Double-click to open recipe">' +
     "<td><div class='r-name'>" + esc(r.name) + "</div><div class='r-meta'>" +
       esc(r.cuisine) + " · " + esc(r.protein) + " · serves " + r.serves + "</div></td>" +
-    '<td class="num">' + r.time + " min</td>" +
+    '<td class="num">' + r.time + " min" + (r.timeNote ? "<div class='r-meta'>" + r.timeNote + "</div>" : "") + "</td>" +
     "<td>" + effortDots(r.effort) + "</td>" +
     "<td>" + stars(r.rating) + "</td>" +
     "<td>" + statusBadge(r.status) + "</td>" +
@@ -603,7 +698,7 @@ function openRecipe(id) {
   if (!r || !body) return;
   document.getElementById("m-title").textContent = r.name;
   document.getElementById("m-facts").innerHTML =
-    "Serves <b>" + r.serves + "</b> · <b>" + r.time + " min</b> total · effort " + effortDots(r.effort) +
+    "Serves <b>" + r.serves + "</b> · <b>" + r.time + " min</b>" + (r.timeNote ? " (" + r.timeNote + ")" : " total") + " · effort " + effortDots(r.effort) +
     " · " + statusBadge(r.status) + (r.rating != null ? " · " + stars(r.rating) : "");
   let logHtml = "";
   if (r.log && r.log.length) {
