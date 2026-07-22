@@ -373,6 +373,25 @@ const RECIPES = [
       { date: "2026-07-22", stars: 0, note: "The restaurant-level sibling, born from asking 'what would take this to restaurant quality?' Answer: bhuna onions, tomato fried until the ghee separates, kasuri methi, and a crowded curry leaf\u2013mustard seed\u2013hing tarka \u2014 plus an optional charcoal-smoke dhungar for the dinner-party flex. Awaiting first cook." }
     ]
   }
+,
+  {
+    id: "spicy-vinegar-chicken-over-tomatoes",
+    name: "Spicy Vinegar Chicken over Tomatoes",
+    cuisine: "American",
+    protein: "Chicken",
+    time: 45,
+    effort: 2,
+    rating: null,
+    status: "Ready to cook",
+    lastCooked: null,
+    timesCooked: 0,
+    serves: 4,
+    leftovers: "OK (chicken/sauce apart from tomatoes; re-crisp skin)",
+    nextTime: "First cook with boneless skin-on cut; ask butcher ahead",
+    log: [
+      { date: "2026-07-22", stars: 0, note: "An Etty favorite in its original bone-in form, workshopped to the house cut: boneless skin-on thighs (any butcher will debone on request). The skin was doing most of the work anyway \u2014 the sear works harder, stock stands in for the bones, and an optional butter swirl covers the rest. Awaiting first cook of this version." }
+    ]
+  }
 ];
 
 // Full cook-mode recipe bodies, keyed by id. Mirrors recipes/<id>.md.
@@ -901,6 +920,85 @@ const RECIPE_BODIES = {
     </ul>
 
     <p class="attr">From Nigella Lawson via NYT Cooking, restaurant-upgraded in workshop: soaked lentils, bhuna onions, spice bloom, tomato fried until the ghee separates, kasuri methi + butter finish, a crowded cumin–mustard–curry leaf–hing tarka, lime, and an optional dhungar smoke. Coconut milk finish is Etty's.</p>
+  `,
+
+  "spicy-vinegar-chicken-over-tomatoes": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+    <p class="tagline"><b>House cut: boneless, skin-on thighs</b> — the skin builds the sauce, no bones means a short braise and easy eating. Any butcher counter will debone thighs on request (freeze the bones for stock).</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox"><span>1 lb ripe tomatoes — <em>this is half the dish; worth the good ones</em></span></label>
+        <label><input type="checkbox">1 red or yellow onion</label>
+        <label><input type="checkbox">1 head garlic (need 4 cloves)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
+        <label><input type="checkbox"><span>2¼–2½ lb boneless, skin-on chicken thighs (about 8) — <em>ask the butcher to debone bone-in thighs, skin on</em></span></label>
+        <label><input type="checkbox">Butter (1 tbsp, optional finish)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">Olive oil (2 tbsp + drizzles)</label>
+        <label><input type="checkbox">White distilled vinegar (½ cup)</label>
+        <label><input type="checkbox">Chicken stock (⅓ cup — or water)</label>
+        <label><input type="checkbox">Kosher salt + flaky salt</label>
+        <label><input type="checkbox">Black pepper</label>
+        <label><input type="checkbox">Red pepper flakes (1½ tsp + more)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Optional for serving</div>
+        <label><input type="checkbox"><span>Crusty bread — <em>the sauce demands mopping</em></span></label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep</h3>
+    <ul class="plain">
+      <li><b>Chicken:</b> pat the thighs <em>very</em> dry — dry skin is what browns — and season both sides with salt and pepper.</li>
+      <li><b>Onion:</b> thinly slice the whole thing; set <b>¼ aside raw</b> for the platter, ¾ for the pot.</li>
+      <li><b>Garlic:</b> crush 4 cloves.</li>
+      <li><b>Ventilation:</b> crack a window or run the hood — simmering vinegar is punchy for a few minutes.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Sear hard <span class="cue">(in batches)</span></h4>
+    <ol>
+      <li>Heat <b>2 tbsp olive oil</b> in a large heavy pot or deep skillet over medium-high. Add <b>half the thighs skin-side down</b>, press flat with a spatula for the first 30 seconds, and leave them alone until the skin is deeply golden and releases without a fight, <b>6–8 minutes</b>. Flip and brown <b>2–3 minutes</b>. Transfer to a plate; repeat with the rest, lowering the heat a touch if the fond darkens past deep brown.</li>
+      <li>Don't rush or crowd this step — with no bones, the fond and rendered fat are doing all the sauce-building. <em>(While the chicken sears: thinly slice the tomatoes.)</em></li>
+    </ol>
+
+    <h4>Step 2 — Aromatics in the fat</h4>
+    <ol>
+      <li>Reduce heat to medium. Add the <b>4 crushed garlic cloves</b> and <b>1½ tsp red pepper flakes</b> to the fat and sizzle <b>30–60 seconds</b>, until fragrant — don't let the garlic brown.</li>
+      <li>Scatter in the <b>¾ sliced onion</b> and cook, stirring and scraping up the fond, <b>2–3 minutes</b>, until slightly softened.</li>
+    </ol>
+
+    <h4>Step 3 — Quick braise</h4>
+    <ol>
+      <li>Return the chicken <b>skin-side up</b>, nestling the pieces together — keep the skin above the liquid line so it holds some crispness. Pour <b>½ cup white vinegar</b> and <b>⅓ cup chicken stock (or water)</b> <em>around</em> the chicken, not over it. Season the liquid with <b>salt, pepper, and a drizzle of olive oil</b>.</li>
+      <li>Simmer uncovered over medium-low <b>6–8 minutes</b>, until the thighs hit <b>175°F</b> and the sauce has thickened just enough to lightly coat a spoon — the sharp vinegar smell mellows as it's ready.</li>
+    </ol>
+
+    <h4>Step 4 — Build the platter <span class="cue">(while it simmers)</span></h4>
+    <ol>
+      <li>Arrange the <b>1 lb sliced tomatoes</b> and the <b>reserved raw onion</b> on a serving platter and <b>salt them now</b> — a few minutes' head start gets their juices weeping into what will become the sauce below.</li>
+    </ol>
+
+    <h4>Step 5 — Assemble</h4>
+    <ol>
+      <li>Taste the sauce. If it reads lean, swirl in <b>1 tbsp butter</b> off heat — it stands in for the fat the bones and extra skin would have given. Adjust salt.</li>
+      <li>Set the chicken on the tomatoes with tongs, then spoon the sauce and onions over everything. Finish with <b>a drizzle of olive oil, flaky salt, more pepper flakes, and black pepper</b>. Bread alongside.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>The whole trick</b> is hot, rich, spicy-sour sauce hitting cold raw tomatoes — an excellent two-for-one chicken and salad. Don't skip salting the tomatoes early.</li>
+      <li><b>Tomato season rules this dish:</b> in winter, use the best cherry tomatoes you can find, halved.</li>
+      <li><b>Leftovers are OK, not great:</b> store chicken and sauce separately from any surviving tomatoes; re-crisp the skin in a dry skillet. Better plan: slice leftover chicken cold over fresh tomatoes tomorrow.</li>
+      <li><b>The bones you saved</b> go in a freezer bag toward the next batch of stock — which can then be the ⅓ cup in this very sauce.</li>
+      <li><b>Heat scales</b> cleanly through the pepper flakes; 1½ tsp is a medium rumble.</li>
+    </ul>
+
+    <p class="attr">From Alison Roman's Spicy Vinegar Chicken over Tomatoes. Changes: boneless skin-on thighs (2¼–2½ lb vs 3½–4 lb bone-in), harder sear guidance, water swapped for stock, optional butter finish, tomatoes salted ahead, braise shortened to match the cut.</p>
   `
 };
 // ====================================================================
