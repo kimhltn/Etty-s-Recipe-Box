@@ -195,7 +195,7 @@
 <body>
 <div class="wrap">
   <header class="top"><h1>🍲 Etty's Recipe Box</h1></header>
-  <p class="sub">Part cookbook, part lab notebook — every recipe workshopped, cooked, and judged. <span class="hint">Double-click a recipe (or hit <b>Open</b>) to read it, Etty's log included.</span></p>
+  <p class="sub">Welcome to Etty's recipe box — nothing gets stars Etty didn't earn at the stove. <span class="hint">Double-click a recipe (or hit <b>Open</b>) to read it, Etty's log included.</span></p>
 
   <div class="tiles" id="tiles"></div>
 
@@ -236,8 +236,8 @@
   <div class="logbox">
     <div class="emoji">✍️</div>
     <div>
-      <b>Welcome to Etty’s recipe box</b> — nothing gets stars Etty didn’t earn at the stove.<br>
-      <span class="example">This page updates as the experiments continue. Made one of these? Tell Etty how it went.</span>
+      <b>Made one of these? Tell Etty how it went</b> — stars, timing, tweaks. The box only updates from real cooks.<br>
+      <span class="example">Every rating here was earned at Etty’s stove — no recipe keeps stars it didn’t deserve.</span>
     </div>
   </div>
 </div>
@@ -333,6 +333,44 @@ const RECIPES = [
     nextTime: "",
     log: [
       { date: "2026-07-21", stars: 5, note: "Inducted as a classic, already tuned to Etty's spec: double the garlic and ginger, half the honey, a full cup of coconut milk for more sauce, and tomatoes halved with a 10-minute head start so they go jammy instead of bursting. Usually tilapia. Straight to Keeper." }
+    ]
+  },
+  {
+    id: "masoor-dal-weeknight",
+    name: "Masoor Dal (Weeknight)",
+    cuisine: "Indian",
+    protein: "Veg",
+    time: 55,
+    timeNote: "soak overlaps prep",
+    effort: 2,
+    rating: null,
+    status: "Ready to cook",
+    lastCooked: null,
+    timesCooked: 0,
+    serves: "4\u20136",
+    leftovers: "Great (freezes very well)",
+    nextTime: "First cook of workshopped version",
+    log: [
+      { date: "2026-07-22", stars: 0, note: "Workshopped in from Nigella's NYT recipe. Etty's been making the original with a half-can of coconut milk for ages \u2014 a certified freezer champion. New in this version: soaked lentils (kinder on digestion), a proper spice bloom, a cumin-garlic tarka, and lime at the end. Awaiting first cook of the upgraded form." }
+    ]
+  },
+  {
+    id: "masoor-dal-weekend",
+    name: "Masoor Dal (Weekend)",
+    cuisine: "Indian",
+    protein: "Veg",
+    time: 70,
+    timeNote: "soak overlaps prep",
+    effort: 3,
+    rating: null,
+    status: "Ready to cook",
+    lastCooked: null,
+    timesCooked: 0,
+    serves: "4\u20136",
+    leftovers: "Great (freezes very well)",
+    nextTime: "Needs an Indian-grocery run: curry leaves, hing, kasuri methi",
+    log: [
+      { date: "2026-07-22", stars: 0, note: "The restaurant-level sibling, born from asking 'what would take this to restaurant quality?' Answer: bhuna onions, tomato fried until the ghee separates, kasuri methi, and a crowded curry leaf\u2013mustard seed\u2013hing tarka \u2014 plus an optional charcoal-smoke dhungar for the dinner-party flex. Awaiting first cook." }
     ]
   }
 ];
@@ -663,6 +701,206 @@ const RECIPE_BODIES = {
     </ul>
 
     <p class="attr">Adapted from Yewande Komolafe's Coconut Fish and Tomato Bake (NYT Cooking). Etty's changes: garlic and ginger doubled, honey halved, coconut milk up to 1 cup, tomatoes halved and given a 10-minute head start before the fish joins.</p>
+  `,
+
+  "masoor-dal-weeknight": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+    <p class="tagline"><b>The soak is step zero:</b> rinse and soak the lentils first — everything else happens inside their 30 minutes.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">1 yellow onion (need 1 cup chopped)</label>
+        <label><input type="checkbox">1 medium sweet potato (~10 oz)</label>
+        <label><input type="checkbox">Fresh ginger (need 1 tbsp minced)</label>
+        <label><input type="checkbox">1 head garlic (2 cloves minced + 3 sliced)</label>
+        <label><input type="checkbox">1 Thai or bird's-eye red chili</label>
+        <label><input type="checkbox">1 bunch cilantro (need 3 tbsp chopped)</label>
+        <label><input type="checkbox">1 lime</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox"><span>Coconut oil (2 tbsp) — <em>or vegetable oil</em></span></label>
+        <label><input type="checkbox">1 cup red lentils</label>
+        <label><input type="checkbox">1 can chopped tomatoes (need 1 cup)</label>
+        <label><input type="checkbox">1 can full-fat coconut milk (need ½ can)</label>
+        <label><input type="checkbox">Ghee or neutral oil (2 tbsp, for the tarka)</label>
+        <label><input type="checkbox">Kosher salt</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Ground coriander (2 tsp)</label>
+        <label><input type="checkbox">Ground cumin (2 tsp)</label>
+        <label><input type="checkbox">Turmeric (2 tsp)</label>
+        <label><input type="checkbox">Ground ginger (1 tsp)</label>
+        <label><input type="checkbox">Cumin seeds (1½ tsp, for the tarka)</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep + a soak</h3>
+    <ul class="plain">
+      <li><b>Lentils — do this first:</b> rinse 1 cup red lentils until the water runs mostly clear, then soak in plenty of cold water ~30 minutes — easier on digestion, faster and creamier cooking. Everything below happens while they soak. <b>Drain and discard the soak water</b> before they go in the pot.</li>
+      <li><b>Garlic:</b> mince 2 cloves (pot); thinly slice 3 (tarka). Keep the piles separate.</li>
+      <li><b>Ginger:</b> mince 1 tbsp.</li>
+      <li><b>Chili:</b> finely dice (seeds in for more heat, out for mild).</li>
+      <li><b>Spices:</b> the 4 ground spices into one small bowl; cumin seeds stay separate for the tarka.</li>
+      <li><b>Coconut milk:</b> shake the can hard.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Build the base</h4>
+    <ol>
+      <li>In a large saucepan over medium-low, heat <b>2 tbsp coconut oil</b> and sauté <b>1 cup chopped onion</b> until softened and translucent, <b>5–6 minutes</b>. <em>(While it cooks: peel and finely dice the sweet potato — you need 2½ cups.)</em></li>
+      <li>Add the <b>sweet potato</b> and sauté <b>5 minutes</b>. Stir in <b>1 tbsp minced ginger</b> and <b>2 minced garlic cloves</b>, cook <b>1 minute</b>, and reduce heat to low.</li>
+    </ol>
+
+    <h4>Step 2 — Bloom the spices</h4>
+    <ol>
+      <li>Add the <b>diced chili</b> and the spice bowl — <b>2 tsp coriander, 2 tsp cumin, 2 tsp turmeric, 1 tsp ground ginger</b> — and stir into the oil <b>30–60 seconds</b>, until strongly fragrant. Don't let it scorch.</li>
+      <li>Add the <b>drained, soaked lentils</b> and stir until well coated.</li>
+    </ol>
+
+    <h4>Step 3 — Simmer</h4>
+    <ol>
+      <li>Add <b>1 cup chopped tomatoes</b> and <b>3½ cups water</b> (reduced from the original 4 to make room for the coconut milk). Bring to a boil, then drop to a fast simmer.</li>
+      <li>Cook uncovered <b>about 20 minutes</b>, stirring occasionally — more often near the end, when the collapsing lentils start to stick — until the lentils have broken down and a piece of sweet potato mashes easily against the side of the pot. <em>(While it simmers: chop the cilantro, juice the half lime, set up the tarka skillet.)</em></li>
+    </ol>
+
+    <h4>Step 4 — Coconut milk finish</h4>
+    <ol>
+      <li>Season with salt (start with <b>1 tsp kosher</b>), then stir in <b>½ can coconut milk</b> (~¾ cup).</li>
+      <li>Simmer <em>gently</em> <b>10 minutes</b>, until thickened — don't hard-boil once the coconut milk is in, or it can split. Whisk briefly to amalgamate. Done when it's a loose porridge: a spoon dragged through leaves a trail that slowly closes.</li>
+    </ol>
+
+    <h4>Step 5 — Tarka <span class="cue">(last 5 minutes)</span></h4>
+    <ol>
+      <li>In a small skillet, heat <b>2 tbsp ghee or oil</b> over medium. Add <b>1½ tsp cumin seeds</b> — they should sputter within seconds.</li>
+      <li>Add the <b>3 sliced garlic cloves</b> and cook until just golden, <b>60–90 seconds</b>, then pull it off the heat immediately — golden to burnt is fast.</li>
+    </ol>
+
+    <h4>Step 6 — Finish &amp; serve</h4>
+    <ol>
+      <li>Off heat, stir the <b>juice of ½ lime</b> into the dal. Taste for salt.</li>
+      <li>Bowl it, pour the sizzling tarka over the top, and finish with <b>chopped cilantro</b>.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>Freezing (this recipe's superpower):</b> freeze in flat portions; it thickens a lot when cold, so loosen with a splash of water while reheating. Best trick: a <b>fresh 3-minute tarka over a reheated portion</b> — it tastes just-cooked.</li>
+      <li><b>The other half-can of coconut milk</b> freezes fine in a jar or ice-cube tray for the next batch.</li>
+      <li><b>In a real rush?</b> Skip the soak — texture is nearly identical, you just lose the digestion benefit. Simmer ~25 minutes instead of 20.</li>
+      <li><b>Heat:</b> one chili with seeds out is mild. Seeds in = medium; a second chili in the bloom = properly hot.</li>
+      <li><b>Vegan</b> as long as the tarka uses oil, not ghee.</li>
+      <li><b>Feeling ambitious?</b> The dressed-up sibling is <b>Masoor Dal (Weekend)</b> — browned onions, fried tomato base, the full tarka, and the charcoal-smoke flex.</li>
+    </ul>
+
+    <p class="attr">From Nigella Lawson via NYT Cooking. Changes: lentils rinsed and soaked 30 min for digestion, coconut oil, a proper spice bloom, water cut to 3½ cups to absorb Etty's half-can coconut milk finish (now built in), a cumin-garlic tarka, and lime at the end.</p>
+  `,
+
+  "masoor-dal-weekend": `
+    <p class="tagline">Every quantity and prep note is written into the step where you need it — no flipping back to an ingredient list mid-cook.</p>
+    <p class="tagline"><b>The restaurant-level version:</b> deeply browned onions, a tomato base fried until the ghee separates, and the full crowded tarka. In a hurry? Cook <b>Masoor Dal (Weeknight)</b> instead.</p>
+
+    <h3>🛒 Grocery list</h3>
+    <div class="groc">
+      <div class="gsec"><div class="gtitle">Produce</div>
+        <label><input type="checkbox">1 yellow onion (need 1 cup chopped)</label>
+        <label><input type="checkbox">1 medium sweet potato (~10 oz)</label>
+        <label><input type="checkbox">Fresh ginger (need 1 tbsp minced)</label>
+        <label><input type="checkbox">1 head garlic (2 cloves minced + 3 sliced)</label>
+        <label><input type="checkbox">1 Thai or bird's-eye red chili</label>
+        <label><input type="checkbox">8–10 fresh curry leaves</label>
+        <label><input type="checkbox">1 bunch cilantro (need 3 tbsp chopped)</label>
+        <label><input type="checkbox">1 lime</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
+        <label><input type="checkbox">Ghee — 4 tbsp total (+1 tsp for the dhungar)</label>
+        <label><input type="checkbox">Butter (1 tbsp, to finish)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Pantry</div>
+        <label><input type="checkbox">1 cup red lentils</label>
+        <label><input type="checkbox">1 can chopped tomatoes (need 1 cup)</label>
+        <label><input type="checkbox">1 can full-fat coconut milk (need ½ can)</label>
+        <label><input type="checkbox">Kosher salt</label>
+        <label><input type="checkbox">Sugar (a small pinch, optional)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Spices</div>
+        <label><input type="checkbox">Ground coriander (2 tsp)</label>
+        <label><input type="checkbox">Ground cumin (2 tsp)</label>
+        <label><input type="checkbox">Turmeric (2 tsp)</label>
+        <label><input type="checkbox">Ground ginger (1 tsp)</label>
+        <label><input type="checkbox">Cumin seeds (1½ tsp)</label>
+        <label><input type="checkbox">Black mustard seeds (1 tsp)</label>
+        <label><input type="checkbox">2 dried red chilies</label>
+        <label><input type="checkbox">Hing / asafoetida (a pinch)</label>
+        <label><input type="checkbox">Kasuri methi — dried fenugreek leaves (1 tbsp)</label>
+      </div>
+      <div class="gsec"><div class="gtitle">Optional for serving</div>
+        <label><input type="checkbox">1 piece natural lump charcoal (dhungar smoke finish)</label>
+      </div>
+    </div>
+
+    <h3>Before you start — 5-minute prep + a soak</h3>
+    <ul class="plain">
+      <li><b>Lentils — do this first:</b> rinse 1 cup red lentils until the water runs mostly clear, then soak in plenty of cold water ~30 minutes. Everything below happens while they soak. <b>Drain and discard the soak water</b> before they go in the pot.</li>
+      <li><b>Garlic:</b> mince 2 cloves (pot); thinly slice 3 (tarka). Keep the piles separate.</li>
+      <li><b>Ginger:</b> mince 1 tbsp.</li>
+      <li><b>Chili:</b> finely dice the fresh chili (seeds in for more heat, out for mild).</li>
+      <li><b>Spices:</b> ground spices in one bowl. Tarka crew in another: cumin seeds, mustard seeds, dried chilies, curry leaves, hing within reach — the tarka moves fast.</li>
+      <li><b>Kasuri methi:</b> measure 1 tbsp, ready to crush.</li>
+      <li><b>Coconut milk:</b> shake the can hard.</li>
+    </ul>
+
+    <h3>Instructions</h3>
+
+    <h4>Step 1 — Bhuna the onions <span class="cue">(the flavor foundation)</span></h4>
+    <ol>
+      <li>In a large saucepan over medium, heat <b>2 tbsp ghee</b> and cook <b>1 cup chopped onion</b>, stirring more often as it darkens, until deep golden brown — <b>12–15 minutes</b>. A splash of water if it starts to catch; don't rush this, it's where most of the extra flavor lives. <em>(While it cooks: peel and finely dice the sweet potato — you need 2½ cups.)</em></li>
+      <li>Add the <b>sweet potato</b> and sauté <b>5 minutes</b>. Stir in <b>1 tbsp minced ginger</b> and <b>2 minced garlic cloves</b>, cook <b>1 minute</b>, and reduce heat to medium-low.</li>
+    </ol>
+
+    <h4>Step 2 — Bloom, then fry the tomato dry</h4>
+    <ol>
+      <li>Add the <b>diced chili</b> and the spice bowl — <b>2 tsp coriander, 2 tsp cumin, 2 tsp turmeric, 1 tsp ground ginger</b> — and stir into the fat <b>30–60 seconds</b>, until strongly fragrant. Don't let it scorch.</li>
+      <li>Add <b>1 cup chopped tomatoes</b> — no water yet — and fry, stirring, <b>5–6 minutes</b>, until the paste darkens, thickens, and the <b>ghee visibly separates at the edges</b>. That fat-separation moment is the classic doneness cue for a finished masala; wait for it.</li>
+    </ol>
+
+    <h4>Step 3 — Simmer</h4>
+    <ol>
+      <li>Stir in the <b>drained, soaked lentils</b> to coat, then add <b>3½ cups water</b>. Bring to a boil, then drop to a fast simmer.</li>
+      <li>Cook uncovered <b>about 20 minutes</b>, stirring occasionally — more often near the end as the collapsing lentils start to stick — until the lentils have broken down and a piece of sweet potato mashes easily against the side of the pot. <em>(While it simmers: chop the cilantro, juice the half lime, stage the tarka skillet.)</em></li>
+    </ol>
+
+    <h4>Step 4 — Coconut milk &amp; kasuri methi finish</h4>
+    <ol>
+      <li>Season with salt (start with <b>1 tsp kosher</b>), stir in <b>½ can coconut milk</b> (~¾ cup), and crush <b>1 tbsp kasuri methi</b> between your palms straight into the pot.</li>
+      <li>Simmer <em>gently</em> <b>10 minutes</b>, until thickened — don't hard-boil once the coconut milk is in, or it can split. Whisk briefly to amalgamate. Done when it's a loose porridge: a spoon dragged through leaves a trail that slowly closes.</li>
+      <li>Off heat: stir in <b>1 tbsp butter</b>, the <b>juice of ½ lime</b>, and a <b>small pinch of sugar</b> if the tomatoes taste sharp. Taste for salt.</li>
+    </ol>
+
+    <h4>Step 5 — The full tarka <span class="cue">(last 5 minutes)</span></h4>
+    <ol>
+      <li>In a small skillet, heat <b>2 tbsp ghee</b> over medium. Add <b>1½ tsp cumin seeds</b> and <b>1 tsp black mustard seeds</b> — within seconds they should sputter and pop.</li>
+      <li>Add <b>2 dried red chilies</b> and the <b>3 sliced garlic cloves</b>; cook until the garlic is just golden, <b>60–90 seconds</b>.</li>
+      <li>Off heat, immediately add <b>8–10 curry leaves</b> — they crackle hard, stand back — and a <b>pinch of hing</b>. Swirl once.</li>
+    </ol>
+
+    <h4>Step 6 — Serve</h4>
+    <ol>
+      <li>Bowl the dal, pour the sizzling tarka over the top, and finish with <b>chopped cilantro</b>.</li>
+      <li class="shortcut">Dinner-party flex — the dhungar: nest a small steel bowl on top of the finished dal in the pot, drop in a piece of lit lump charcoal, spoon 1 tsp ghee over it, and clamp the lid on 2–3 minutes. Remove the bowl and serve immediately, smoky and dramatic.</li>
+    </ol>
+
+    <h3>Tips</h3>
+    <ul class="plain">
+      <li><b>Freezing:</b> same superpower as the weeknight version — flat portions, loosen with water to reheat, and a <b>fresh tarka over a reheated portion</b> makes it taste just-cooked.</li>
+      <li><b>Curry leaves</b> freeze well in a zip bag straight from fresh; hing and kasuri methi keep near-forever. One Indian-grocery run stocks you for many batches.</li>
+      <li><b>The other half-can of coconut milk</b> freezes fine in a jar or ice-cube tray.</li>
+      <li><b>Heat:</b> the dried chilies in the tarka add aroma more than fire. For real heat, seeds in on the fresh chili, or add a second one to the bloom.</li>
+      <li><b>Vegan:</b> swap ghee for coconut oil throughout and skip the butter — you keep ~90% of the effect.</li>
+      <li><b>Pairs with</b> basmati rice, or broiled salmon.</li>
+    </ul>
+
+    <p class="attr">From Nigella Lawson via NYT Cooking, restaurant-upgraded in workshop: soaked lentils, bhuna onions, spice bloom, tomato fried until the ghee separates, kasuri methi + butter finish, a crowded cumin–mustard–curry leaf–hing tarka, lime, and an optional dhungar smoke. Coconut milk finish is Etty's.</p>
   `
 };
 // ====================================================================
@@ -813,7 +1051,7 @@ function openRecipe(id) {
     ).join("");
   }
   document.getElementById("m-body").innerHTML = body + logHtml +
-    '<div class="modal-log">🍳 <b>Made it?</b> Tell Etty how it went — every cook here gets logged, and the recipes keep evolving.</div>';
+    '<div class="modal-log">✍️ <b>Made it?</b> Tell Etty how it went — stars, real cook time, and any tweaks. She keeps the box honest.</div>';
   document.getElementById("overlay").classList.add("on");
   document.querySelector(".modal").scrollTop = 0;
 }
