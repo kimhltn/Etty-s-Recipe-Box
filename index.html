@@ -381,15 +381,16 @@ const RECIPES = [
     protein: "Chicken",
     time: 45,
     effort: 2,
-    rating: null,
-    status: "Ready to cook",
-    lastCooked: null,
-    timesCooked: 0,
+    rating: 5,
+    status: "Cooked & rated",
+    lastCooked: "2026-07-23",
+    timesCooked: 1,
     serves: 4,
-    leftovers: "OK (chicken/sauce apart from tomatoes; re-crisp skin)",
-    nextTime: "First cook with boneless skin-on cut; ask butcher ahead",
+    leftovers: "OK (delicious, skin softens; re-crisp in dry skillet)",
+    nextTime: "",
     log: [
-      { date: "2026-07-22", stars: 0, note: "An Etty favorite in its original bone-in form, workshopped to the house cut: boneless skin-on thighs (any butcher will debone on request). The skin was doing most of the work anyway \u2014 the sear works harder, stock stands in for the bones, and an optional butter swirl covers the rest. Awaiting first cook of this version." }
+      { date: "2026-07-22", stars: 0, note: "An Etty favorite in its original bone-in form, workshopped to the house cut: boneless skin-on thighs (any butcher will debone on request). The skin was doing most of the work anyway \u2014 the sear works harder, stock stands in for the bones, and an optional butter swirl covers the rest. Awaiting first cook of this version." },
+      { date: "2026-07-23", stars: 5, note: "First cook of the boneless skin-on cut: incredible. Timing held at ~45 min. Two techniques earned their way in \u2014 a weight on the chicken for the whole sear (worked beautifully, really even crispy skin), and two pans browning at once for a crowd, the second deglazed with a splash of wine and everything combined for the sauce. Leftovers delicious but a notch down: the skin gives up its crisp." }
     ]
   }
 ];
@@ -955,8 +956,9 @@ const RECIPE_BODIES = {
 
     <h4>Step 1 — Sear hard <span class="cue">(in batches)</span></h4>
     <ol>
-      <li>Heat <b>2 tbsp olive oil</b> in a large heavy pot or deep skillet over medium-high. Add <b>half the thighs skin-side down</b>, press flat with a spatula for the first 30 seconds, and leave them alone until the skin is deeply golden and releases without a fight, <b>6–8 minutes</b>. Flip and brown <b>2–3 minutes</b>. Transfer to a plate; repeat with the rest, lowering the heat a touch if the fond darkens past deep brown.</li>
+      <li>Heat <b>2 tbsp olive oil</b> in a large heavy pot or deep skillet over medium-high. Add <b>half the thighs skin-side down</b> and set a <b>weight on top</b> (a foil-wrapped heavy pan, a bacon press, a lid that fits inside) for the <b>entire browning time</b> — full, even contact is what gets uniformly crispy skin. Leave them alone until the skin is deeply golden and releases without a fight, <b>6–8 minutes</b>. Flip, remove the weight, and brown <b>2–3 minutes</b>. Transfer to a plate; repeat with the rest, lowering the heat a touch if the fond darkens past deep brown.</li>
       <li>Don't rush or crowd this step — with no bones, the fond and rendered fat are doing all the sauce-building. <em>(While the chicken sears: thinly slice the tomatoes.)</em></li>
+      <li><em>Cooking for a crowd? Sequential batches get slow — <b>brown in two pans at once</b>, deglaze the second pan with a <b>splash of white wine</b> to capture its fond, then combine everything into one pot for Steps 2–3 and build the sauce there.</em></li>
     </ol>
 
     <h4>Step 2 — Aromatics in the fat</h4>
@@ -986,12 +988,12 @@ const RECIPE_BODIES = {
     <ul class="plain">
       <li><b>The whole trick</b> is hot, rich, spicy-sour sauce hitting cold raw tomatoes — an excellent two-for-one chicken and salad. Don't skip salting the tomatoes early.</li>
       <li><b>Tomato season rules this dish:</b> in winter, use the best cherry tomatoes you can find, halved.</li>
-      <li><b>Leftovers are OK, not great:</b> store chicken and sauce separately from any surviving tomatoes; re-crisp the skin in a dry skillet. Better plan: slice leftover chicken cold over fresh tomatoes tomorrow.</li>
+      <li><b>Leftovers are delicious, just demoted:</b> the flavor holds beautifully, but the skin loses its crisp. Store chicken and sauce separately from any surviving tomatoes; re-crisp the skin in a dry skillet, or slice the chicken cold over fresh tomatoes tomorrow.</li>
       <li><b>The bones you saved</b> go in a freezer bag toward the next batch of stock — which can then be the ⅓ cup in this very sauce.</li>
       <li><b>Heat scales</b> cleanly through the pepper flakes; 1½ tsp is a medium rumble.</li>
     </ul>
 
-    <p class="attr">From Alison Roman's Spicy Vinegar Chicken over Tomatoes. Changes: boneless skin-on thighs (2¼–2½ lb vs 3½–4 lb bone-in), harder sear guidance, water swapped for stock, optional butter finish, tomatoes salted ahead, braise shortened to match the cut.</p>
+    <p class="attr">From Alison Roman's Spicy Vinegar Chicken over Tomatoes. Changes: boneless skin-on thighs (2¼–2½ lb vs 3½–4 lb bone-in), weighted sear for even crispy skin, two-pan crowd method with a wine deglaze, water swapped for stock, optional butter finish, tomatoes salted ahead, braise shortened to match the cut.</p>
   `
 };
 // ====================================================================
