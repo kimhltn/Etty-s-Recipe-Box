@@ -4,1164 +4,325 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Etty's Recipe Box</title>
+<meta name="description" content="Etty's recipe box — nothing gets stars Etty didn't earn at the stove.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <style>
-  :root {
-    color-scheme: light;
-    --surface-1: #fcfcfb;
-    --page: #f9f9f7;
-    --ink: #0b0b0b;
-    --ink-2: #52514e;
-    --muted: #898781;
-    --grid: #e1e0d9;
-    --baseline: #c3c2b7;
-    --border: rgba(11,11,11,0.10);
-    --accent: #2a78d6;
-    --accent-wash: rgba(42,120,214,0.07);
-    --star: #eda100;
-    --good: #0ca30c;
-    --shadow: 0 1px 2px rgba(11,11,11,0.05), 0 4px 16px rgba(11,11,11,0.05);
-    --modal-shadow: 0 8px 40px rgba(11,11,11,0.25);
+  :root{
+    --paper:#F5F4EF;
+    --card:#FDFCF9;
+    --ink:#20241F;
+    --ink-soft:#5A6055;
+    --green:#2E5E43;
+    --green-deep:#1E4230;
+    --green-wash:#E7EEE7;
+    --gold:#A87A16;
+    --tomato:#B0402F;
+    --line:#DAD8CD;
+    --shadow:0 1px 2px rgba(32,36,31,.06),0 6px 18px rgba(32,36,31,.07);
   }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --surface-1: #1a1a19;
-      --page: #0d0d0d;
-      --ink: #ffffff;
-      --ink-2: #c3c2b7;
-      --muted: #898781;
-      --grid: #2c2c2a;
-      --baseline: #383835;
-      --border: rgba(255,255,255,0.10);
-      --accent: #3987e5;
-      --accent-wash: rgba(57,135,229,0.12);
-      --star: #c98500;
-      --good: #0ca30c;
-      --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 4px 16px rgba(0,0,0,0.3);
-      --modal-shadow: 0 8px 40px rgba(0,0,0,0.6);
-    }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Karla',system-ui,sans-serif;font-size:16px;line-height:1.55;
   }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    background: var(--page);
-    color: var(--ink);
-    padding: 28px 24px 40px;
-    -webkit-font-smoothing: antialiased;
-  }
-  .wrap { max-width: 1020px; margin: 0 auto; }
+  a{color:var(--green)}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 80px}
 
-  header.top { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
-  h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; margin: 0; }
-  .sub { color: var(--ink-2); font-size: 13.5px; margin: 0 0 22px; }
-  .sub .hint { color: var(--muted); }
-  kbd {
-    font-family: inherit; font-size: 11px; color: var(--ink-2);
-    border: 1px solid var(--baseline); border-bottom-width: 2px; border-radius: 5px;
-    padding: 0 5px; background: var(--surface-1);
+  /* ---------- header ---------- */
+  header{padding:52px 0 8px;text-align:center}
+  .eyebrow{
+    font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--green);font-weight:600;
   }
+  h1.site{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(38px,7vw,58px);
+    margin:10px 0 6px;letter-spacing:-.01em;color:var(--green-deep);
+  }
+  .tagline{color:var(--ink-soft);max-width:46ch;margin:0 auto;font-size:16.5px}
+  .rule{
+    display:flex;align-items:center;gap:12px;margin:30px 0 22px;color:var(--line);
+  }
+  .rule::before,.rule::after{content:"";flex:1;border-top:1px solid var(--line)}
+  .rule span{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--ink-soft)}
 
-  /* ---- stat tiles ---- */
-  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 22px; }
-  .tile {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
-    padding: 14px 16px; box-shadow: var(--shadow);
+  /* ---------- controls ---------- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-family:'Spline Sans Mono',monospace;font-size:12.5px;font-weight:500;
+    padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--card);
+    color:var(--ink-soft);cursor:pointer;transition:all .15s ease;
   }
-  .tile .label { font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
-  .tile .value { font-size: 28px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; }
-  .tile .note { font-size: 11.5px; color: var(--muted); margin-top: 5px; }
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip.on{background:var(--green);border-color:var(--green);color:#fff}
+  select{
+    font-family:'Spline Sans Mono',monospace;font-size:12.5px;padding:8px 10px;
+    border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);
+  }
+  :is(.chip,select,button):focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-  /* ---- filters ---- */
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; align-items: center; }
-  .filters select, .filters input[type="search"] {
-    font: inherit; font-size: 13px; color: var(--ink);
-    background: var(--surface-1); border: 1px solid var(--grid); border-radius: 10px;
-    padding: 7px 11px; box-shadow: var(--shadow);
+  /* ---------- recipe cards ---------- */
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .card{
+    position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);cursor:pointer;padding:18px 20px 16px;
+    display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;
+    transition:transform .15s ease,border-color .15s ease;text-align:left;width:100%;
+    font:inherit;color:inherit;
   }
-  .filters select:focus, .filters input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
-  .filters input[type="search"] { min-width: 190px; }
-  .filters .clear { font-size: 12.5px; color: var(--accent); background: none; border: none; cursor: pointer; padding: 6px 4px; }
-  .count { font-size: 12px; color: var(--muted); margin-left: auto; }
+  .card:hover{transform:translateY(-2px);border-color:var(--green)}
+  .card::before{ /* index-card tab */
+    content:attr(data-cuisine);
+    position:absolute;top:-9px;left:16px;background:var(--green-wash);color:var(--green-deep);
+    border:1px solid var(--line);border-bottom-color:var(--green-wash);border-radius:6px 6px 0 0;
+    font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;padding:2px 9px 1px;
+  }
+  .card h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:6px 0 2px;
+    color:var(--ink);letter-spacing:-.005em;
+  }
+  .meta{
+    font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;gap:4px 14px;
+  }
+  .meta b{color:var(--ink);font-weight:600}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;grid-column:1 / -1}
+  .badge{
+    font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.06em;
+    padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);
+  }
+  .badge.keeper{border-color:var(--tomato);color:var(--tomato);font-weight:600}
+  .badge.ready{border-color:var(--green);color:var(--green)}
 
-  /* ---- table ---- */
-  .card {
-    background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px;
-    overflow: hidden; box-shadow: var(--shadow);
+  /* the stamp — signature element */
+  .stamp{
+    grid-row:1 / span 2;align-self:center;justify-self:end;
+    font-family:'Spline Sans Mono',monospace;font-weight:600;font-size:15px;
+    color:var(--gold);border:2px solid currentColor;border-radius:8px;
+    padding:6px 10px;transform:rotate(-4deg);letter-spacing:.02em;white-space:nowrap;
+    opacity:.92;
   }
-  .scroll { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
-  th, td { text-align: left; padding: 13px 14px; white-space: nowrap; vertical-align: middle; }
-  th {
-    font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em;
-    color: var(--muted); font-weight: 650; cursor: pointer; user-select: none;
-    border-bottom: 1px solid var(--baseline);
-  }
-  th:hover { color: var(--ink-2); }
-  th .arrow { font-size: 9px; margin-left: 3px; color: var(--accent); }
-  tbody tr { border-bottom: 1px solid var(--grid); cursor: pointer; transition: background 0.1s ease; }
-  tbody tr:last-child { border-bottom: none; }
-  tbody tr:hover { background: var(--accent-wash); }
-  td.num { font-variant-numeric: tabular-nums; }
+  .stamp.unrated{color:var(--line);border-style:dashed;font-weight:400;transform:rotate(-2deg)}
 
-  .r-name { font-weight: 650; font-size: 14px; }
-  .r-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .stars { color: var(--star); font-size: 14px; letter-spacing: 1.5px; }
-  .stars .empty { color: var(--grid); }
-  .rating-num { font-size: 11.5px; color: var(--muted); margin-left: 4px; font-variant-numeric: tabular-nums; }
-  .unrated { color: var(--muted); font-size: 12.5px; }
-  .badge {
-    display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px;
-    border-radius: 999px; border: 1px solid var(--baseline); color: var(--ink-2);
-  }
-  .badge.keeper { border-color: var(--good); color: var(--good); background: rgba(12,163,12,0.07); }
-  .badge.ready { border-color: var(--accent); color: var(--accent); background: var(--accent-wash); }
-  .effort-dots { letter-spacing: 2.5px; color: var(--ink-2); font-size: 10px; }
-  .effort-dots .off { color: var(--grid); }
-  .open-btn {
-    font-size: 12px; font-weight: 600; color: var(--accent);
-    border: 1px solid var(--grid); background: none; border-radius: 8px;
-    padding: 5px 11px; cursor: pointer;
-  }
-  .open-btn:hover { background: var(--accent-wash); border-color: var(--accent); }
-  .empty-state { padding: 36px; text-align: center; color: var(--muted); font-size: 13px; }
+  .empty{text-align:center;color:var(--ink-soft);padding:48px 0;font-family:'Spline Sans Mono',monospace;font-size:13px}
 
-  /* ---- log-a-cook helper ---- */
-  .logbox {
-    margin-top: 16px; display: flex; gap: 12px; align-items: flex-start;
-    background: var(--surface-1); border: 1px dashed var(--baseline); border-radius: 14px;
-    padding: 14px 18px; font-size: 13px; color: var(--ink-2);
+  /* ---------- modal ---------- */
+  dialog{
+    border:none;border-radius:14px;padding:0;background:var(--card);color:var(--ink);
+    width:min(760px,94vw);max-height:92vh;box-shadow:0 24px 80px rgba(32,36,31,.35);
   }
-  .logbox .emoji { font-size: 20px; line-height: 1.3; }
-  .logbox b { color: var(--ink); }
-  .logbox .example { color: var(--muted); font-style: italic; }
+  dialog::backdrop{background:rgba(30,42,32,.55);backdrop-filter:blur(2px)}
+  .modal-bar{
+    position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
+    background:var(--green-deep);color:#fff;padding:12px 18px;z-index:2;
+  }
+  .modal-bar .mtitle{font-family:'Fraunces',serif;font-size:17px;font-weight:600;padding-right:12px}
+  .modal-bar button{
+    background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;
+    font-family:'Spline Sans Mono',monospace;font-size:12px;padding:6px 12px;cursor:pointer;
+  }
+  .modal-bar button:hover{background:rgba(255,255,255,.12)}
+  .recipe-body{padding:10px 28px 40px;overflow-wrap:break-word}
 
-  /* ---- recipe modal ---- */
-  .overlay {
-    position: fixed; inset: 0; background: rgba(11,11,11,0.45);
-    display: none; align-items: flex-start; justify-content: center;
-    padding: 4vh 16px; z-index: 50;
+  /* rendered markdown */
+  .recipe-body h1{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--green-deep);margin:22px 0 6px;letter-spacing:-.01em}
+  .recipe-body h2{font-family:'Fraunces',serif;font-size:21px;font-weight:600;margin:30px 0 8px;color:var(--green-deep)}
+  .recipe-body h3{font-family:'Karla',sans-serif;font-size:16px;font-weight:700;margin:22px 0 6px;
+    padding-left:10px;border-left:3px solid var(--green)}
+  .recipe-body p{margin:10px 0}
+  .recipe-body hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+  .recipe-body li{margin:6px 0}
+  .recipe-body input[type=checkbox]{
+    accent-color:var(--green);width:17px;height:17px;margin-right:8px;vertical-align:-3px;cursor:pointer;
   }
-  .overlay.on { display: flex; }
-  .modal {
-    background: var(--surface-1); border-radius: 16px; box-shadow: var(--modal-shadow);
-    max-width: 720px; width: 100%; max-height: 92vh; overflow-y: auto;
-    border: 1px solid var(--border);
+  .recipe-body li:has(input:checked){color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--line)}
+  .recipe-body ul{padding-left:22px}
+  .recipe-body ul li:has(input){list-style:none;margin-left:-22px}
+  .recipe-body strong{color:var(--green-deep)}
+  .recipe-body em{color:var(--ink-soft)}
+  .recipe-body code{font-family:'Spline Sans Mono',monospace;font-size:.88em;background:var(--green-wash);padding:1px 5px;border-radius:4px}
+  .recipe-body blockquote{margin:12px 0;padding:2px 16px;border-left:3px solid var(--gold);color:var(--ink-soft)}
+  .loading{padding:60px 0;text-align:center;font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--ink-soft)}
+
+  footer{
+    margin-top:64px;text-align:center;color:var(--ink-soft);font-size:15px;
   }
-  .modal-head {
-    position: sticky; top: 0; background: var(--surface-1); z-index: 2;
-    padding: 20px 26px 14px; border-bottom: 1px solid var(--grid);
-    display: flex; align-items: flex-start; gap: 12px;
+  footer .fmark{font-family:'Fraunces',serif;font-size:18px;color:var(--green-deep);font-weight:600;margin-bottom:4px}
+
+  @media (max-width:560px){
+    header{padding-top:36px}
+    .card{grid-template-columns:1fr;padding:16px}
+    .stamp{grid-row:auto;justify-self:start;margin-top:8px}
+    dialog{width:100vw;max-width:100vw;max-height:100vh;height:100vh;border-radius:0;margin:0}
+    .recipe-body{padding:6px 18px 60px}
+    .controls{flex-direction:column;align-items:stretch}
+    select{width:100%}
   }
-  .modal-head h2 { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px; }
-  .modal-head .facts { font-size: 12.5px; color: var(--ink-2); }
-  .modal-head .facts b { font-weight: 650; }
-  .close {
-    margin-left: auto; flex-shrink: 0; border: none; background: var(--page); color: var(--ink-2);
-    width: 32px; height: 32px; border-radius: 999px; font-size: 15px; cursor: pointer;
-  }
-  .close:hover { background: var(--grid); }
-  .modal-body { padding: 10px 26px 28px; font-size: 14px; line-height: 1.6; color: var(--ink); }
-  .modal-body .tagline { font-style: italic; color: var(--ink-2); font-size: 13px; }
-  .modal-body h3 {
-    font-size: 12px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted);
-    margin: 26px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--grid);
-  }
-  .modal-body h4 { font-size: 14.5px; margin: 20px 0 8px; }
-  .modal-body h4 .cue { font-weight: 500; color: var(--accent); font-size: 13px; }
-  .modal-body ol { padding-left: 22px; margin: 8px 0; }
-  .modal-body ol li { margin-bottom: 9px; }
-  .modal-body ul.plain { list-style: none; padding-left: 2px; margin: 8px 0; }
-  .modal-body ul.plain li { margin-bottom: 7px; }
-  .modal-body .shortcut { font-style: italic; color: var(--ink-2); font-size: 13px; }
-  .groc { columns: 2; column-gap: 28px; }
-  @media (max-width: 560px) { .groc { columns: 1; } }
-  .groc .gsec { break-inside: avoid; margin-bottom: 14px; }
-  .groc .gsec .gtitle { font-weight: 650; font-size: 12.5px; color: var(--ink-2); margin-bottom: 6px; }
-  .groc label { display: flex; gap: 8px; align-items: baseline; font-size: 13px; margin-bottom: 5px; cursor: pointer; }
-  .groc input[type="checkbox"] { accent-color: var(--accent); }
-  .groc label:has(input:checked) { color: var(--muted); text-decoration: line-through; }
-  .attr { font-size: 12px; color: var(--muted); font-style: italic; margin-top: 24px; }
-  .elog { margin-bottom: 14px; }
-  .elog-meta { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
-  .elog-meta .stars { font-size: 12px; }
-  .elog-note { font-size: 13.5px; color: var(--ink-2); }
-  .modal-log {
-    margin-top: 26px; background: var(--accent-wash); border-radius: 12px;
-    padding: 12px 16px; font-size: 12.5px; color: var(--ink-2);
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header class="top"><h1>🍲 Etty's Recipe Box</h1></header>
-  <p class="sub">Welcome to Etty's recipe box — nothing gets stars Etty didn't earn at the stove. <span class="hint">Double-click a recipe (or hit <b>Open</b>) to read it, Etty's log included.</span></p>
+  <header>
+    <div class="eyebrow">From Etty's kitchen</div>
+    <h1 class="site">Etty's Recipe Box</h1>
+    <p class="tagline">Welcome to Etty's recipe box — nothing gets stars Etty didn't earn at the stove. Open a card and cook straight from your phone.</p>
+  </header>
 
-  <div class="tiles" id="tiles"></div>
+  <div class="rule"><span id="count"></span></div>
 
-  <div class="filters" id="filters">
-    <input type="search" id="q" placeholder="Search recipes…">
-    <select id="f-cuisine"><option value="">All cuisines</option></select>
-    <select id="f-protein"><option value="">All proteins</option></select>
-    <select id="f-status"><option value="">All statuses</option></select>
-    <select id="f-effort">
-      <option value="">Any effort</option>
-      <option value="1">Effort ≤ 1</option>
-      <option value="2">Effort ≤ 2</option>
-      <option value="3">Effort ≤ 3</option>
-      <option value="4">Effort ≤ 4</option>
-      <option value="5">Effort ≤ 5</option>
+  <div class="controls">
+    <div class="chips" id="chips" role="group" aria-label="Filter recipes"></div>
+    <select id="sort" aria-label="Sort recipes">
+      <option value="rating">Sort: Etty Rating</option>
+      <option value="quick">Sort: Quickest first</option>
+      <option value="effort">Sort: Least effort</option>
+      <option value="recent">Sort: Recently cooked</option>
+      <option value="name">Sort: A–Z</option>
     </select>
-    <select id="f-time">
-      <option value="">Any time</option>
-      <option value="30">≤ 30 min</option>
-      <option value="45">≤ 45 min</option>
-      <option value="60">≤ 60 min</option>
-      <option value="90">≤ 90 min</option>
-    </select>
-    <button class="clear" id="clear">Clear</button>
-    <span class="count" id="count"></span>
   </div>
 
-  <div class="card">
-    <div class="scroll">
-      <table id="tbl">
-        <thead><tr id="head"></tr></thead>
-        <tbody id="body"></tbody>
-      </table>
-    </div>
-    <div class="empty-state" id="empty" style="display:none">No recipes match — clear a filter or two.</div>
-  </div>
+  <div class="cards" id="cards" aria-live="polite"></div>
 
-  <div class="logbox">
-    <div class="emoji">✍️</div>
-    <div>
-      <b>Made one of these? Tell Etty how it went</b> — stars, timing, tweaks. The box only updates from real cooks.<br>
-      <span class="example">Every rating here was earned at Etty’s stove — no recipe keeps stars it didn’t deserve.</span>
-    </div>
-  </div>
+  <footer>
+    <div class="fmark">Made it? Tell Etty how it went.</div>
+    <div>Every star on this page was earned at the stove.</div>
+  </footer>
 </div>
 
-<!-- recipe modal -->
-<div class="overlay" id="overlay">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head">
-      <div>
-        <h2 id="m-title"></h2>
-        <div class="facts" id="m-facts"></div>
-      </div>
-      <button class="close" id="m-close" aria-label="Close">✕</button>
-    </div>
-    <div class="modal-body" id="m-body"></div>
+<dialog id="modal" aria-label="Recipe">
+  <div class="modal-bar">
+    <span class="mtitle" id="mtitle"></span>
+    <button id="close" type="button">Close ✕</button>
   </div>
-</div>
+  <div class="recipe-body" id="mbody"></div>
+</dialog>
 
 <script>
-// ===== DATA — mirrors recipes/_index.md. Update both together. =====
-const RECIPES = [
-  {
-    id: "caldo-de-pollo-con-arroz",
-    name: "Caldo de Pollo con Arroz",
-    cuisine: "Mexican",
-    protein: "Chicken",
-    time: 60,
-    effort: 3,
-    rating: 5,
-    status: "Cooked & rated",
-    lastCooked: "2026-07-20",
-    timesCooked: 1,
-    serves: 6,
-    leftovers: "Great (store rice separately)",
-    nextTime: "",
-    log: [
-      { date: "2026-07-20", stars: 5, note: "First cook, full five stars. Timing held at ~60 min on the nose, effort 3 felt right, and the leftovers reheated beautifully with the rice stored separately. Sleeper hit: the rice." },
-      { date: "2026-07-21", stars: 0, note: "Correction: thought it needed more chicken, but only ~1.3 lb actually went in the pot. The listed 1½ lb (about 4 thighs) is right — weigh it and it sings." }
-    ]
-  },
-  {
-    id: "spanish-basmati-rice",
-    name: "Spanish Basmati Rice",
-    cuisine: "Mexican",
-    protein: "Veg (side)",
-    time: 35,
-    effort: 1,
-    rating: 5,
-    status: "Keeper",
-    lastCooked: "2026-07-21",
-    timesCooked: 2,
-    serves: "4–6",
-    leftovers: "Great (sprinkle water to reheat)",
-    nextTime: "",
-    log: [
-      { date: "2026-07-20", stars: 5, note: "Cooked inside the caldo. Incredible — good enough that it got promoted to its own recipe on the spot." },
-      { date: "2026-07-21", stars: 5, note: "Made it again this morning, standalone this time. Just incredible. Two five-star cooks in two days — that's a Keeper." }
-    ]
-  },
-  {
-    id: "yogurt-zaatar-grilled-chicken",
-    name: "Yogurt Za'atar Grilled Chicken",
-    cuisine: "Middle Eastern",
-    protein: "Chicken",
-    time: 30,
-    timeNote: "+2 hr marinade",
-    effort: 2,
-    rating: 5,
-    status: "Keeper",
-    lastCooked: null,
-    timesCooked: 0,
-    serves: "4–6",
-    leftovers: "",
-    nextTime: "",
-    log: [
-      { date: "2026-07-21", stars: 5, note: "Inducted as a long-standing classic — cooked more times than the log will ever know. Garlicky, tangy, absurdly tender off the grill. As written, no tweaks. Straight to Keeper." }
-    ]
-  },
-  {
-    id: "coconut-fish-tomato-bake",
-    name: "Coconut Fish and Tomato Bake",
-    cuisine: "West African-inspired",
-    protein: "Fish",
-    time: 40,
-    timeNote: "incl. marinade",
-    effort: 2,
-    rating: 5,
-    status: "Keeper",
-    lastCooked: null,
-    timesCooked: 0,
-    serves: 4,
-    leftovers: "",
-    nextTime: "",
-    log: [
-      { date: "2026-07-21", stars: 5, note: "Inducted as a classic, already tuned to Etty's spec: double the garlic and ginger, half the honey, a full cup of coconut milk for more sauce, and tomatoes halved with a 10-minute head start so they go jammy instead of bursting. Usually tilapia. Straight to Keeper." }
-    ]
-  },
-  {
-    id: "masoor-dal-weeknight",
-    name: "Masoor Dal (Weeknight)",
-    cuisine: "Indian",
-    protein: "Veg",
-    time: 55,
-    timeNote: "soak overlaps prep",
-    effort: 2,
-    rating: null,
-    status: "Ready to cook",
-    lastCooked: null,
-    timesCooked: 0,
-    serves: "4\u20136",
-    leftovers: "Great (freezes very well)",
-    nextTime: "First cook of workshopped version",
-    log: [
-      { date: "2026-07-22", stars: 0, note: "Workshopped in from Nigella's NYT recipe. Etty's been making the original with a half-can of coconut milk for ages \u2014 a certified freezer champion. New in this version: soaked lentils (kinder on digestion), a proper spice bloom, a cumin-garlic tarka, and lime at the end. Awaiting first cook of the upgraded form." }
-    ]
-  },
-  {
-    id: "masoor-dal-weekend",
-    name: "Masoor Dal (Weekend)",
-    cuisine: "Indian",
-    protein: "Veg",
-    time: 70,
-    timeNote: "soak overlaps prep",
-    effort: 3,
-    rating: null,
-    status: "Ready to cook",
-    lastCooked: null,
-    timesCooked: 0,
-    serves: "4\u20136",
-    leftovers: "Great (freezes very well)",
-    nextTime: "Needs an Indian-grocery run: curry leaves, hing, kasuri methi",
-    log: [
-      { date: "2026-07-22", stars: 0, note: "The restaurant-level sibling, born from asking 'what would take this to restaurant quality?' Answer: bhuna onions, tomato fried until the ghee separates, kasuri methi, and a crowded curry leaf\u2013mustard seed\u2013hing tarka \u2014 plus an optional charcoal-smoke dhungar for the dinner-party flex. Awaiting first cook." }
-    ]
+(function(){
+  const bust = () => '?v=' + Date.now();
+  const FILTERS = ['All','Chicken','Fish','Veg','Lamb','Keepers'];
+  let recipes = [], filter = 'All', sortBy = 'rating';
+  const mdCache = {};
+
+  const $ = id => document.getElementById(id);
+
+  function stars(r){
+    if(r == null) return null;
+    const full = Math.floor(r), half = r % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '') + ' ' + r.toFixed(1);
   }
-,
-  {
-    id: "spicy-vinegar-chicken-over-tomatoes",
-    name: "Spicy Vinegar Chicken over Tomatoes",
-    cuisine: "American",
-    protein: "Chicken",
-    time: 45,
-    effort: 2,
-    rating: 5,
-    status: "Cooked & rated",
-    lastCooked: "2026-07-23",
-    timesCooked: 1,
-    serves: 4,
-    leftovers: "OK (delicious, skin softens; re-crisp in dry skillet)",
-    nextTime: "",
-    log: [
-      { date: "2026-07-22", stars: 0, note: "An Etty favorite in its original bone-in form, workshopped to the house cut: boneless skin-on thighs (any butcher will debone on request). The skin was doing most of the work anyway \u2014 the sear works harder, stock stands in for the bones, and an optional butter swirl covers the rest. Awaiting first cook of this version." },
-      { date: "2026-07-23", stars: 5, note: "First cook of the boneless skin-on cut: incredible. Timing held at ~45 min. Two techniques earned their way in \u2014 a weight on the chicken for the whole sear (worked beautifully, really even crispy skin), and two pans browning at once for a crowd, the second deglazed with a splash of wine and everything combined for the sauce. Leftovers delicious but a notch down: the skin gives up its crisp." }
-    ]
+
+  function badge(status){
+    if(status === 'Keeper') return '<span class="badge keeper">Keeper</span>';
+    if(status === 'Ready to cook') return '<span class="badge ready">Ready to cook</span>';
+    if(status === 'Workshopping') return '<span class="badge">In the workshop</span>';
+    return '<span class="badge">Cooked &amp; rated</span>';
   }
-];
 
-// Full cook-mode recipe bodies, keyed by id. Mirrors recipes/<id>.md.
-const RECIPE_BODIES = {
-  "caldo-de-pollo-con-arroz": `
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">2 yellow onions</label>
-        <label><input type="checkbox">1 head garlic (need 10–12 cloves)</label>
-        <label><input type="checkbox">3 Roma tomatoes</label>
-        <label><input type="checkbox">1 jalapeño</label>
-        <label><input type="checkbox">1 rib celery</label>
-        <label><input type="checkbox">1–2 avocados</label>
-        <label><input type="checkbox">1 bunch green onions</label>
-        <label><input type="checkbox">1 bunch cilantro</label>
-        <label><input type="checkbox">2 limes</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
-        <label><input type="checkbox"><span>1½ lb bone-in, skin-on chicken thighs (about 4) — <em>weigh it! · or 1 lb rotisserie meat</em></span></label>
-        <label><input type="checkbox">Sour cream</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">Extra-virgin olive oil (¼ cup total)</label>
-        <label><input type="checkbox">1 cup basmati rice</label>
-        <label><input type="checkbox">¼ cup tomato sauce (1 small can)</label>
-        <label><input type="checkbox">Low-sodium chicken broth — 9½ cups total</label>
-        <label><input type="checkbox">Kosher salt</label>
-        <label><input type="checkbox">Habanero hot sauce</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Ground cumin (1 tsp)</label>
-        <label><input type="checkbox">Mexican oregano (1 tsp)</label>
-        <label><input type="checkbox">2 bay leaves</label>
-        <label><input type="checkbox">Onion powder (1½ tsp)</label>
-        <label><input type="checkbox">Garlic powder (1 tsp)</label>
-        <label><input type="checkbox">Dried parsley (2 tsp)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Optional for serving</div>
-        <label><input type="checkbox">Tortillas</label>
-        <label><input type="checkbox">Jack cheese</label>
-        <label><input type="checkbox">Tortilla chips</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep</h3>
-    <ul class="plain">
-      <li><b>Onions:</b> halve both. Set aside one half whole (poach), slice one half into thick rounds (charring), and finely mince ¼ cup from the rest (rice).</li>
-      <li><b>Garlic:</b> smash and peel 2 cloves (poach); leave 6–8 cloves unpeeled (charring).</li>
-      <li><b>Celery:</b> finely mince ¼ cup (about 1 rib).</li>
-      <li><b>Jalapeño:</b> cut 4 thin slices, flick out the seeds.</li>
-      <li><b>Rice:</b> measure 1 cup basmati into a fine-mesh strainer, ready to rinse.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Poach the chicken <span class="cue">(start this first)</span></h4>
-    <ol>
-      <li>In a large pot, combine <b>8 cups low-sodium chicken broth</b>, <b>1½ lb bone-in skin-on chicken thighs</b> (about 4), <b>½ yellow onion</b> (left whole), <b>2 garlic cloves, smashed and peeled</b>, <b>2 bay leaves</b>, and <b>1½ tsp kosher salt</b>.</li>
-      <li>Bring to a bare simmer — don't boil, or the chicken toughens. Poach gently, partially covered, <b>20–25 minutes</b>, until the chicken hits 175°F and pulls apart easily. Skim foam as it rises.</li>
-      <li>Transfer the chicken to a plate. Fish out and discard the onion, garlic, and bay leaves; keep the broth warm. Once cool enough to handle, discard skin and bones and shred the meat. Don't add it back yet.</li>
-      <li class="shortcut">Rotisserie shortcut: skip the poach — simmer the same aromatics in the broth 15 minutes, discard them, and add 1 lb shredded rotisserie meat in Step 4.</li>
-    </ol>
-
-    <h4>Step 2 — Spanish basmati rice <span class="cue">(while the chicken poaches)</span></h4>
-    <ol>
-      <li>Rinse <b>1 cup basmati rice</b> under cold water until the water runs clear.</li>
-      <li>Heat <b>2 tbsp olive or avocado oil</b> in a saucepan over medium. Cook <b>¼ cup finely minced yellow onion</b> and <b>¼ cup finely minced celery</b> for 2 minutes, then stir in the rice and toast <b>2–3 minutes</b>, until lightly golden and fragrant.</li>
-      <li>Stir in <b>¼ cup tomato sauce</b>, <b>1½ tsp onion powder</b>, <b>1 tsp garlic powder</b>, <b>2 tsp dried parsley</b>, and <b>½ tsp kosher salt</b>.</li>
-      <li>Add <b>1½ cups low-sodium chicken broth</b>, bring to a boil, then cover and simmer on low <b>15 minutes</b>, until the liquid is absorbed.</li>
-      <li>Off heat, steam with the lid on <b>10 minutes</b>, then fluff with a fork.</li>
-    </ol>
-
-    <h4>Step 3 — Char and fry the tomato base <span class="cue">(while everything simmers)</span></h4>
-    <ol>
-      <li>Set <b>3 whole Roma tomatoes</b>, <b>½ yellow onion in thick slices</b>, and <b>6–8 unpeeled garlic cloves</b> in a dry skillet over high heat (or under the broiler). Turn occasionally until blackened in spots and softened, <b>8–10 minutes</b>. Peel the garlic.</li>
-      <li>Blend the charred vegetables with <b>4 thin jalapeño slices (seeded)</b> and a splash of the poaching broth until smooth.</li>
-      <li>Wipe out the skillet, heat <b>2 tbsp extra-virgin olive oil</b> over medium-high, and pour in the purée — it should sizzle hard. Fry, stirring, <b>4–5 minutes</b> until it darkens and thickens. Stir in <b>1 tsp ground cumin</b> and <b>1 tsp Mexican oregano</b> for the last 30 seconds.</li>
-    </ol>
-
-    <h4>Step 4 — Bring it together</h4>
-    <ol>
-      <li>Stir the fried tomato base into the pot of warm broth. Simmer, uncovered, <b>10 minutes</b>.</li>
-      <li>Add the shredded chicken and heat through, about <b>5 minutes</b> — no longer, so it stays juicy.</li>
-      <li>Off heat, stir in the <b>juice of 1 lime</b>. Taste and adjust salt — it likely needs another pinch or two.</li>
-    </ol>
-
-    <h4>Step 5 — Serve</h4>
-    <ol>
-      <li>Spoon <b>¼ cup Spanish basmati rice</b> into each bowl and ladle the soup over.</li>
-      <li>Top each bowl with <b>sliced avocado</b>, <b>a dollop of sour cream</b>, <b>sliced green onions</b>, <b>chopped cilantro</b>, and <b>a few drops of habanero hot sauce</b>.</li>
-      <li>Serve with <b>lime wedges</b> and warm tortillas, Jack cheese, or tortilla chips.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>Store rice and soup separately</b> — basmati soaks up broth fast and goes soft if stored together.</li>
-      <li><b>Reheating:</b> warm the soup, then add rice for the last minute or two.</li>
-      <li><b>More heat?</b> Blend in extra jalapeño (or leave the seeds in), or char a serrano alongside the tomatoes.</li>
-      <li><b>Deeper broth:</b> if you have time, drop the stripped thigh bones back into the pot for the Step 4 simmer, then remove.</li>
-      <li><b>Salt in stages:</b> the poach, the rice, and the final taste-and-adjust each get their own — that's what makes it taste seasoned, not salty.</li>
-    </ul>
-
-    <p class="attr">Inspired by a recipe from The Harvest Kitchen, upgraded with a traditional caldo-style fried tomato base and broth-poached chicken.</p>
-  `,
-
-  "spanish-basmati-rice": `
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">1 small yellow onion (need ¼ cup minced)</label>
-        <label><input type="checkbox">1 rib celery</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">1 cup basmati rice</label>
-        <label><input type="checkbox">¼ cup tomato sauce (1 small can)</label>
-        <label><input type="checkbox">1½ cups low-sodium chicken broth</label>
-        <label><input type="checkbox">Olive or avocado oil (2 tbsp)</label>
-        <label><input type="checkbox">Kosher salt</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Onion powder (1½ tsp)</label>
-        <label><input type="checkbox">Garlic powder (1 tsp)</label>
-        <label><input type="checkbox">Dried parsley (2 tsp)</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 2-minute prep</h3>
-    <ul class="plain">
-      <li><b>Onion:</b> finely mince ¼ cup.</li>
-      <li><b>Celery:</b> finely mince ¼ cup (about 1 rib).</li>
-      <li><b>Rice:</b> measure 1 cup basmati into a fine-mesh strainer.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Rinse and toast</h4>
-    <ol>
-      <li>Rinse <b>1 cup basmati rice</b> under cold water until the water runs clear.</li>
-      <li>Heat <b>2 tbsp olive or avocado oil</b> in a saucepan over medium. Cook <b>¼ cup finely minced yellow onion</b> and <b>¼ cup finely minced celery</b> for 2 minutes, then stir in the rice and toast <b>2–3 minutes</b>, until lightly golden and fragrant — the toast is where the flavor comes from, don't rush it.</li>
-    </ol>
-
-    <h4>Step 2 — Season and simmer</h4>
-    <ol>
-      <li>Stir in <b>¼ cup tomato sauce</b>, <b>1½ tsp onion powder</b>, <b>1 tsp garlic powder</b>, <b>2 tsp dried parsley</b>, and <b>½ tsp kosher salt</b>.</li>
-      <li>Add <b>1½ cups low-sodium chicken broth</b>, bring to a boil, then cover and simmer on low <b>15 minutes</b>, until the liquid is absorbed.</li>
-    </ol>
-
-    <h4>Step 3 — Steam and fluff</h4>
-    <ol>
-      <li>Off heat, steam with the lid on <b>10 minutes</b> — don't peek; the steam finishes the grains.</li>
-      <li>Fluff with a fork and serve.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>Born in the caldo:</b> this is the rice from the Caldo de Pollo con Arroz — spoon ¼ cup into each bowl and ladle the soup over.</li>
-      <li><b>Vegetarian:</b> swap the chicken broth for vegetable broth, or water plus ½ tsp bouillon.</li>
-      <li><b>Reheating:</b> sprinkle a spoonful of water over, cover, and microwave — the steam brings it back.</li>
-      <li><b>Scaling up:</b> rice-to-liquid ratio is 1 : 1½; hold the toast time steady and it doubles cleanly in a wider pan.</li>
-    </ul>
-
-    <p class="attr">Broken out from the Caldo de Pollo con Arroz after its first cook made it clear the rice deserved its own page.</p>
-  `,
-
-  "yogurt-zaatar-grilled-chicken": `
-    <p class="tagline"><b>Plan ahead:</b> mix the marinade at breakfast or lunch (needs 2+ hours, up to overnight) and dinner is a 30-minute job.</p>
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">1 head garlic (need 6 cloves)</label>
-        <label><input type="checkbox">2 lemons</label>
-        <label><input type="checkbox">1 bunch cilantro (¼ cup chopped + sprigs)</label>
-        <label><input type="checkbox">Fresh oregano or marjoram (1 tbsp + sprigs)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
-        <label><input type="checkbox">2¼ lb boneless, skinless chicken thighs</label>
-        <label><input type="checkbox">1 cup plain whole-milk yogurt</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">Extra-virgin olive oil (3 tbsp + more for serving)</label>
-        <label><input type="checkbox">Kosher salt</label>
-        <label><input type="checkbox">Black pepper</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Za'atar (1½ tbsp + more for serving)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Optional for serving</div>
-        <label><input type="checkbox">Pita or flatbread</label>
-        <label><input type="checkbox">Cucumbers + tomatoes (big salad alongside)</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep</h3>
-    <p style="font-size:13px">This recipe is all about <b>splits</b> — almost everything divides between marinade and sauce. Sort them now and the rest is easy:</p>
-    <ul class="plain">
-      <li><b>Garlic:</b> grate or press all 6 cloves. <b>5 for the marinade, 1 aside for the sauce.</b></li>
-      <li><b>Lemons:</b> zest both. <b>Half the zest to the marinade, half aside for the sauce.</b> Keep one zested lemon for serving; the spare goes back in the fridge.</li>
-      <li><b>Yogurt:</b> measure 1 cup. <b>⅓ cup to the marinade, ⅔ cup aside for the sauce.</b></li>
-      <li><b>Herbs:</b> chop ¼ cup cilantro and 1 tbsp oregano or marjoram; save whole sprigs for garnish.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Marinate <span class="cue">(morning of — needs 2+ hours)</span></h4>
-    <ol>
-      <li>In a large bowl, stir together <b>5 grated garlic cloves</b>, <b>half the lemon zest</b>, <b>⅓ cup yogurt</b>, <b>¼ cup chopped cilantro</b>, <b>3 tbsp extra-virgin olive oil</b>, <b>1½ tbsp za'atar</b>, <b>1 tbsp chopped oregano or marjoram</b>, <b>1¾ tsp kosher salt</b>, and <b>¼ tsp black pepper</b>.</li>
-      <li>Add <b>2¼ lb boneless, skinless chicken thighs</b> and toss until every piece is coated. Cover and refrigerate <b>at least 2 hours</b>, up to overnight — longer deepens the flavor, but even 2 hours delivers.</li>
-    </ol>
-
-    <h4>Step 2 — Grill</h4>
-    <ol>
-      <li>Light the grill to <b>medium</b>. Pull the chicken from the bowl, shaking off the excess marinade — clinging yogurt steams and scorches before the meat chars.</li>
-      <li>Grill the first side until charred in spots, <b>5–8 minutes</b>. Flip and grill <b>another 5–8 minutes</b>, until just cooked through — <b>165°F</b> at the thickest point.</li>
-      <li class="shortcut">Broiler alternate (rainy day): rack 3 inches from the element, foil-lined sheet pan — foil, not parchment, which can burn — same times, same flip.</li>
-    </ol>
-
-    <h4>Step 3 — Yogurt sauce <span class="cue">(while the chicken grills)</span></h4>
-    <ol>
-      <li>Stir together the <b>reserved ⅔ cup yogurt</b>, <b>reserved grated garlic clove</b>, and <b>reserved lemon zest</b>. Season to taste with <b>salt and pepper</b>.</li>
-      <li>Cut the zested lemon in half, ready for serving.</li>
-    </ol>
-
-    <h4>Step 4 — Serve</h4>
-    <ol>
-      <li>Pile the chicken on a platter. Drizzle with <b>olive oil</b> and add a <b>big squeeze of the zested lemon</b>.</li>
-      <li>Scatter over the <b>herb sprigs</b> and a <b>pinch more za'atar</b>. Serve with the <b>yogurt sauce</b>, warm <b>pita</b>, and a <b>big cucumber-tomato salad</b>.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>Chicken breasts work too</b> — they cook faster than thighs; watch them closely.</li>
-      <li><b>The marinade window is forgiving:</b> 2 hours minimum, overnight max. Yogurt tenderizes without the mushiness citrus-heavy marinades cause.</li>
-      <li><b>Char in spots is flavor,</b> not a mistake. Pull at 165°F — thighs stay juicy where breasts would punish you.</li>
-    </ul>
-
-    <p class="attr">From NYT Cooking (featured in "For the Juiciest Grilled Chicken, Just Add Yogurt"), reformatted into cook mode with the ingredient splits mapped up front; quantities as published.</p>
-  `,
-
-  "coconut-fish-tomato-bake": `
-    <p class="tagline"><b>The sequencing trick:</b> the tomatoes' 10-minute head start happens during the back half of the fish's marinade — nothing waits on anything.</p>
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">2-inch piece fresh ginger</label>
-        <label><input type="checkbox">2 garlic cloves</label>
-        <label><input type="checkbox">2 limes</label>
-        <label><input type="checkbox">1 bunch cilantro (½ cup chopped, split)</label>
-        <label><input type="checkbox">2 pints cherry or grape tomatoes</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Seafood</div>
-        <label><input type="checkbox"><span>4 (6-oz) fillets tilapia — <em>or any white fish; salmon works too</em></span></label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">1 cup unsweetened coconut milk</label>
-        <label><input type="checkbox">Honey (1½ tsp)</label>
-        <label><input type="checkbox">Olive oil (3 tbsp)</label>
-        <label><input type="checkbox">Kosher salt</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Ground turmeric (½ tsp)</label>
-        <label><input type="checkbox">Red-pepper flakes (½ tsp)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">For serving</div>
-        <label><input type="checkbox">Steamed rice or a baguette to grill</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep</h3>
-    <ul class="plain">
-      <li><b>Ginger + garlic:</b> finely grate the 2-inch piece of ginger and both garlic cloves.</li>
-      <li><b>Cilantro:</b> chop ½ cup total — ¼ cup for the marinade, ¼ cup for serving.</li>
-      <li><b>Tomatoes:</b> halve them all. <em>(The point — halved tomatoes go jammy and feed the sauce instead of bursting whole.)</em></li>
-      <li><b>Racks:</b> one lower-middle, one closest to the broiler.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Marinade <span class="cue">(start this first)</span></h4>
-    <ol>
-      <li>In a large bowl, whisk together <b>1 cup unsweetened coconut milk</b>, the <b>grated ginger and garlic</b>, <b>½ tsp ground turmeric</b>, <b>½ tsp red-pepper flakes</b>, <b>1½ tsp honey</b>, and <b>1 tsp kosher salt</b>.</li>
-      <li><b>Zest and juice 1 lime</b> directly into the bowl. Stir in <b>¼ cup chopped cilantro</b>.</li>
-      <li>Add the <b>4 fish fillets</b> and turn to coat. Fridge, <b>15–30 minutes</b> — no longer, or the lime starts "cooking" the fish.</li>
-    </ol>
-
-    <h4>Step 2 — Tomatoes on <span class="cue">(while the fish marinates)</span></h4>
-    <ol>
-      <li>Heat the oven to <b>425°F</b>.</li>
-      <li>Pile the <b>halved tomatoes</b> onto a large sheet pan, drizzle with <b>2 tbsp olive oil</b>, season with <b>salt</b>, and toss.</li>
-      <li>About <b>10 minutes before the marinade is up</b>, slide the pan onto the lower-middle rack — the head start gets them collapsing and concentrating before the fish shows up.</li>
-    </ol>
-
-    <h4>Step 3 — Fish joins the party</h4>
-    <ol>
-      <li>Pull the pan out. Nestle the <b>marinated fillets</b> between the tomatoes, spoon <b>all the marinade</b> over the fish, and drizzle with the last <b>1 tbsp olive oil</b>.</li>
-      <li>Roast on the lower-middle rack <b>8–10 minutes</b>, until the surface is opaque but the center isn't done — it should <b>not</b> flake easily yet.</li>
-      <li>Remove the pan and heat the <b>broiler to high</b>.</li>
-    </ol>
-
-    <h4>Step 4 — Broil to finish</h4>
-    <ol>
-      <li>Move the pan to the broiler rack. Broil <b>5–6 minutes</b>, rotating once, until the fish flakes and the tomatoes brown in spots.</li>
-      <li>Meanwhile, slice the <b>second lime into wedges</b>.</li>
-    </ol>
-
-    <h4>Step 5 — Serve</h4>
-    <ol>
-      <li>Divide fish and tomatoes among plates and <b>tip the pan juices over the fish</b> — that silky turmeric-coconut sauce is the whole point.</li>
-      <li>Shower with the <b>remaining ¼ cup cilantro</b>; serve with <b>lime wedges</b>, over <b>rice</b> or with <b>grilled baguette</b> for sopping.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>The sauce scales with the coconut milk</b> — the full 1 cup (vs. the original ¾) is what makes it generous enough for rice.</li>
-      <li><b>Fish is flexible:</b> tilapia is the house default; snapper through salmon all work. Thicker fillets push both cook times to the top of their ranges.</li>
-      <li><b>Doneness insurance:</b> the roast-then-broil two-stage is forgiving — pull the roast early if in doubt; the broiler finishes the job.</li>
-      <li><b>Don't marinate past 30 minutes</b> — the lime is working on the fish the whole time.</li>
-    </ul>
-
-    <p class="attr">Adapted from Yewande Komolafe's Coconut Fish and Tomato Bake (NYT Cooking). Etty's changes: garlic and ginger doubled, honey halved, coconut milk up to 1 cup, tomatoes halved and given a 10-minute head start before the fish joins.</p>
-  `,
-
-  "masoor-dal-weeknight": `
-    <p class="tagline"><b>The soak is step zero:</b> rinse and soak the lentils first — everything else happens inside their 30 minutes.</p>
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">1 yellow onion (need 1 cup chopped)</label>
-        <label><input type="checkbox">1 medium sweet potato (~10 oz)</label>
-        <label><input type="checkbox">Fresh ginger (need 1 tbsp minced)</label>
-        <label><input type="checkbox">1 head garlic (2 cloves minced + 3 sliced)</label>
-        <label><input type="checkbox">1 Thai or bird's-eye red chili</label>
-        <label><input type="checkbox">1 bunch cilantro (need 3 tbsp chopped)</label>
-        <label><input type="checkbox">1 lime</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox"><span>Coconut oil (2 tbsp) — <em>or vegetable oil</em></span></label>
-        <label><input type="checkbox">1 cup red lentils</label>
-        <label><input type="checkbox">1 can chopped tomatoes (need 1 cup)</label>
-        <label><input type="checkbox">1 can full-fat coconut milk (need ½ can)</label>
-        <label><input type="checkbox">Ghee or neutral oil (2 tbsp, for the tarka)</label>
-        <label><input type="checkbox">Kosher salt</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Ground coriander (2 tsp)</label>
-        <label><input type="checkbox">Ground cumin (2 tsp)</label>
-        <label><input type="checkbox">Turmeric (2 tsp)</label>
-        <label><input type="checkbox">Ground ginger (1 tsp)</label>
-        <label><input type="checkbox">Cumin seeds (1½ tsp, for the tarka)</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep + a soak</h3>
-    <ul class="plain">
-      <li><b>Lentils — do this first:</b> rinse 1 cup red lentils until the water runs mostly clear, then soak in plenty of cold water ~30 minutes — easier on digestion, faster and creamier cooking. Everything below happens while they soak. <b>Drain and discard the soak water</b> before they go in the pot.</li>
-      <li><b>Garlic:</b> mince 2 cloves (pot); thinly slice 3 (tarka). Keep the piles separate.</li>
-      <li><b>Ginger:</b> mince 1 tbsp.</li>
-      <li><b>Chili:</b> finely dice (seeds in for more heat, out for mild).</li>
-      <li><b>Spices:</b> the 4 ground spices into one small bowl; cumin seeds stay separate for the tarka.</li>
-      <li><b>Coconut milk:</b> shake the can hard.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Build the base</h4>
-    <ol>
-      <li>In a large saucepan over medium-low, heat <b>2 tbsp coconut oil</b> and sauté <b>1 cup chopped onion</b> until softened and translucent, <b>5–6 minutes</b>. <em>(While it cooks: peel and finely dice the sweet potato — you need 2½ cups.)</em></li>
-      <li>Add the <b>sweet potato</b> and sauté <b>5 minutes</b>. Stir in <b>1 tbsp minced ginger</b> and <b>2 minced garlic cloves</b>, cook <b>1 minute</b>, and reduce heat to low.</li>
-    </ol>
-
-    <h4>Step 2 — Bloom the spices</h4>
-    <ol>
-      <li>Add the <b>diced chili</b> and the spice bowl — <b>2 tsp coriander, 2 tsp cumin, 2 tsp turmeric, 1 tsp ground ginger</b> — and stir into the oil <b>30–60 seconds</b>, until strongly fragrant. Don't let it scorch.</li>
-      <li>Add the <b>drained, soaked lentils</b> and stir until well coated.</li>
-    </ol>
-
-    <h4>Step 3 — Simmer</h4>
-    <ol>
-      <li>Add <b>1 cup chopped tomatoes</b> and <b>3½ cups water</b> (reduced from the original 4 to make room for the coconut milk). Bring to a boil, then drop to a fast simmer.</li>
-      <li>Cook uncovered <b>about 20 minutes</b>, stirring occasionally — more often near the end, when the collapsing lentils start to stick — until the lentils have broken down and a piece of sweet potato mashes easily against the side of the pot. <em>(While it simmers: chop the cilantro, juice the half lime, set up the tarka skillet.)</em></li>
-    </ol>
-
-    <h4>Step 4 — Coconut milk finish</h4>
-    <ol>
-      <li>Season with salt (start with <b>1 tsp kosher</b>), then stir in <b>½ can coconut milk</b> (~¾ cup).</li>
-      <li>Simmer <em>gently</em> <b>10 minutes</b>, until thickened — don't hard-boil once the coconut milk is in, or it can split. Whisk briefly to amalgamate. Done when it's a loose porridge: a spoon dragged through leaves a trail that slowly closes.</li>
-    </ol>
-
-    <h4>Step 5 — Tarka <span class="cue">(last 5 minutes)</span></h4>
-    <ol>
-      <li>In a small skillet, heat <b>2 tbsp ghee or oil</b> over medium. Add <b>1½ tsp cumin seeds</b> — they should sputter within seconds.</li>
-      <li>Add the <b>3 sliced garlic cloves</b> and cook until just golden, <b>60–90 seconds</b>, then pull it off the heat immediately — golden to burnt is fast.</li>
-    </ol>
-
-    <h4>Step 6 — Finish &amp; serve</h4>
-    <ol>
-      <li>Off heat, stir the <b>juice of ½ lime</b> into the dal. Taste for salt.</li>
-      <li>Bowl it, pour the sizzling tarka over the top, and finish with <b>chopped cilantro</b>.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>Freezing (this recipe's superpower):</b> freeze in flat portions; it thickens a lot when cold, so loosen with a splash of water while reheating. Best trick: a <b>fresh 3-minute tarka over a reheated portion</b> — it tastes just-cooked.</li>
-      <li><b>The other half-can of coconut milk</b> freezes fine in a jar or ice-cube tray for the next batch.</li>
-      <li><b>In a real rush?</b> Skip the soak — texture is nearly identical, you just lose the digestion benefit. Simmer ~25 minutes instead of 20.</li>
-      <li><b>Heat:</b> one chili with seeds out is mild. Seeds in = medium; a second chili in the bloom = properly hot.</li>
-      <li><b>Vegan</b> as long as the tarka uses oil, not ghee.</li>
-      <li><b>Feeling ambitious?</b> The dressed-up sibling is <b>Masoor Dal (Weekend)</b> — browned onions, fried tomato base, the full tarka, and the charcoal-smoke flex.</li>
-    </ul>
-
-    <p class="attr">From Nigella Lawson via NYT Cooking. Changes: lentils rinsed and soaked 30 min for digestion, coconut oil, a proper spice bloom, water cut to 3½ cups to absorb Etty's half-can coconut milk finish (now built in), a cumin-garlic tarka, and lime at the end.</p>
-  `,
-
-  "masoor-dal-weekend": `
-    <p class="tagline"><b>The restaurant-level version:</b> deeply browned onions, a tomato base fried until the ghee separates, and the full crowded tarka. In a hurry? Cook <b>Masoor Dal (Weeknight)</b> instead.</p>
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox">1 yellow onion (need 1 cup chopped)</label>
-        <label><input type="checkbox">1 medium sweet potato (~10 oz)</label>
-        <label><input type="checkbox">Fresh ginger (need 1 tbsp minced)</label>
-        <label><input type="checkbox">1 head garlic (2 cloves minced + 3 sliced)</label>
-        <label><input type="checkbox">1 Thai or bird's-eye red chili</label>
-        <label><input type="checkbox">8–10 fresh curry leaves</label>
-        <label><input type="checkbox">1 bunch cilantro (need 3 tbsp chopped)</label>
-        <label><input type="checkbox">1 lime</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
-        <label><input type="checkbox">Ghee — 4 tbsp total (+1 tsp for the dhungar)</label>
-        <label><input type="checkbox">Butter (1 tbsp, to finish)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">1 cup red lentils</label>
-        <label><input type="checkbox">1 can chopped tomatoes (need 1 cup)</label>
-        <label><input type="checkbox">1 can full-fat coconut milk (need ½ can)</label>
-        <label><input type="checkbox">Kosher salt</label>
-        <label><input type="checkbox">Sugar (a small pinch, optional)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Spices</div>
-        <label><input type="checkbox">Ground coriander (2 tsp)</label>
-        <label><input type="checkbox">Ground cumin (2 tsp)</label>
-        <label><input type="checkbox">Turmeric (2 tsp)</label>
-        <label><input type="checkbox">Ground ginger (1 tsp)</label>
-        <label><input type="checkbox">Cumin seeds (1½ tsp)</label>
-        <label><input type="checkbox">Black mustard seeds (1 tsp)</label>
-        <label><input type="checkbox">2 dried red chilies</label>
-        <label><input type="checkbox">Hing / asafoetida (a pinch)</label>
-        <label><input type="checkbox">Kasuri methi — dried fenugreek leaves (1 tbsp)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Optional for serving</div>
-        <label><input type="checkbox">1 piece natural lump charcoal (dhungar smoke finish)</label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep + a soak</h3>
-    <ul class="plain">
-      <li><b>Lentils — do this first:</b> rinse 1 cup red lentils until the water runs mostly clear, then soak in plenty of cold water ~30 minutes. Everything below happens while they soak. <b>Drain and discard the soak water</b> before they go in the pot.</li>
-      <li><b>Garlic:</b> mince 2 cloves (pot); thinly slice 3 (tarka). Keep the piles separate.</li>
-      <li><b>Ginger:</b> mince 1 tbsp.</li>
-      <li><b>Chili:</b> finely dice the fresh chili (seeds in for more heat, out for mild).</li>
-      <li><b>Spices:</b> ground spices in one bowl. Tarka crew in another: cumin seeds, mustard seeds, dried chilies, curry leaves, hing within reach — the tarka moves fast.</li>
-      <li><b>Kasuri methi:</b> measure 1 tbsp, ready to crush.</li>
-      <li><b>Coconut milk:</b> shake the can hard.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Bhuna the onions <span class="cue">(the flavor foundation)</span></h4>
-    <ol>
-      <li>In a large saucepan over medium, heat <b>2 tbsp ghee</b> and cook <b>1 cup chopped onion</b>, stirring more often as it darkens, until deep golden brown — <b>12–15 minutes</b>. A splash of water if it starts to catch; don't rush this, it's where most of the extra flavor lives. <em>(While it cooks: peel and finely dice the sweet potato — you need 2½ cups.)</em></li>
-      <li>Add the <b>sweet potato</b> and sauté <b>5 minutes</b>. Stir in <b>1 tbsp minced ginger</b> and <b>2 minced garlic cloves</b>, cook <b>1 minute</b>, and reduce heat to medium-low.</li>
-    </ol>
-
-    <h4>Step 2 — Bloom, then fry the tomato dry</h4>
-    <ol>
-      <li>Add the <b>diced chili</b> and the spice bowl — <b>2 tsp coriander, 2 tsp cumin, 2 tsp turmeric, 1 tsp ground ginger</b> — and stir into the fat <b>30–60 seconds</b>, until strongly fragrant. Don't let it scorch.</li>
-      <li>Add <b>1 cup chopped tomatoes</b> — no water yet — and fry, stirring, <b>5–6 minutes</b>, until the paste darkens, thickens, and the <b>ghee visibly separates at the edges</b>. That fat-separation moment is the classic doneness cue for a finished masala; wait for it.</li>
-    </ol>
-
-    <h4>Step 3 — Simmer</h4>
-    <ol>
-      <li>Stir in the <b>drained, soaked lentils</b> to coat, then add <b>3½ cups water</b>. Bring to a boil, then drop to a fast simmer.</li>
-      <li>Cook uncovered <b>about 20 minutes</b>, stirring occasionally — more often near the end as the collapsing lentils start to stick — until the lentils have broken down and a piece of sweet potato mashes easily against the side of the pot. <em>(While it simmers: chop the cilantro, juice the half lime, stage the tarka skillet.)</em></li>
-    </ol>
-
-    <h4>Step 4 — Coconut milk &amp; kasuri methi finish</h4>
-    <ol>
-      <li>Season with salt (start with <b>1 tsp kosher</b>), stir in <b>½ can coconut milk</b> (~¾ cup), and crush <b>1 tbsp kasuri methi</b> between your palms straight into the pot.</li>
-      <li>Simmer <em>gently</em> <b>10 minutes</b>, until thickened — don't hard-boil once the coconut milk is in, or it can split. Whisk briefly to amalgamate. Done when it's a loose porridge: a spoon dragged through leaves a trail that slowly closes.</li>
-      <li>Off heat: stir in <b>1 tbsp butter</b>, the <b>juice of ½ lime</b>, and a <b>small pinch of sugar</b> if the tomatoes taste sharp. Taste for salt.</li>
-    </ol>
-
-    <h4>Step 5 — The full tarka <span class="cue">(last 5 minutes)</span></h4>
-    <ol>
-      <li>In a small skillet, heat <b>2 tbsp ghee</b> over medium. Add <b>1½ tsp cumin seeds</b> and <b>1 tsp black mustard seeds</b> — within seconds they should sputter and pop.</li>
-      <li>Add <b>2 dried red chilies</b> and the <b>3 sliced garlic cloves</b>; cook until the garlic is just golden, <b>60–90 seconds</b>.</li>
-      <li>Off heat, immediately add <b>8–10 curry leaves</b> — they crackle hard, stand back — and a <b>pinch of hing</b>. Swirl once.</li>
-    </ol>
-
-    <h4>Step 6 — Serve</h4>
-    <ol>
-      <li>Bowl the dal, pour the sizzling tarka over the top, and finish with <b>chopped cilantro</b>.</li>
-      <li class="shortcut">Dinner-party flex — the dhungar: nest a small steel bowl on top of the finished dal in the pot, drop in a piece of lit lump charcoal, spoon 1 tsp ghee over it, and clamp the lid on 2–3 minutes. Remove the bowl and serve immediately, smoky and dramatic.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>Freezing:</b> same superpower as the weeknight version — flat portions, loosen with water to reheat, and a <b>fresh tarka over a reheated portion</b> makes it taste just-cooked.</li>
-      <li><b>Curry leaves</b> freeze well in a zip bag straight from fresh; hing and kasuri methi keep near-forever. One Indian-grocery run stocks you for many batches.</li>
-      <li><b>The other half-can of coconut milk</b> freezes fine in a jar or ice-cube tray.</li>
-      <li><b>Heat:</b> the dried chilies in the tarka add aroma more than fire. For real heat, seeds in on the fresh chili, or add a second one to the bloom.</li>
-      <li><b>Vegan:</b> swap ghee for coconut oil throughout and skip the butter — you keep ~90% of the effect.</li>
-      <li><b>Pairs with</b> basmati rice, or broiled salmon.</li>
-    </ul>
-
-    <p class="attr">From Nigella Lawson via NYT Cooking, restaurant-upgraded in workshop: soaked lentils, bhuna onions, spice bloom, tomato fried until the ghee separates, kasuri methi + butter finish, a crowded cumin–mustard–curry leaf–hing tarka, lime, and an optional dhungar smoke. Coconut milk finish is Etty's.</p>
-  `,
-
-  "spicy-vinegar-chicken-over-tomatoes": `
-    <p class="tagline"><b>House cut: boneless, skin-on thighs</b> — the skin builds the sauce, no bones means a short braise and easy eating. Any butcher counter will debone thighs on request (freeze the bones for stock).</p>
-
-    <h3>🛒 Grocery list</h3>
-    <div class="groc">
-      <div class="gsec"><div class="gtitle">Produce</div>
-        <label><input type="checkbox"><span>1 lb ripe tomatoes — <em>this is half the dish; worth the good ones</em></span></label>
-        <label><input type="checkbox">1 red or yellow onion</label>
-        <label><input type="checkbox">1 head garlic (need 4 cloves)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Meat &amp; dairy</div>
-        <label><input type="checkbox"><span>2¼–2½ lb boneless, skin-on chicken thighs (about 8) — <em>ask the butcher to debone bone-in thighs, skin on</em></span></label>
-        <label><input type="checkbox">Butter (1 tbsp, optional finish)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Pantry</div>
-        <label><input type="checkbox">Olive oil (2 tbsp + drizzles)</label>
-        <label><input type="checkbox">White distilled vinegar (½ cup)</label>
-        <label><input type="checkbox">Chicken stock (⅓ cup — or water)</label>
-        <label><input type="checkbox">Kosher salt + flaky salt</label>
-        <label><input type="checkbox">Black pepper</label>
-        <label><input type="checkbox">Red pepper flakes (1½ tsp + more)</label>
-      </div>
-      <div class="gsec"><div class="gtitle">Optional for serving</div>
-        <label><input type="checkbox"><span>Crusty bread — <em>the sauce demands mopping</em></span></label>
-      </div>
-    </div>
-
-    <h3>Before you start — 5-minute prep</h3>
-    <ul class="plain">
-      <li><b>Chicken:</b> pat the thighs <em>very</em> dry — dry skin is what browns — and season both sides with salt and pepper.</li>
-      <li><b>Onion:</b> thinly slice the whole thing; set <b>¼ aside raw</b> for the platter, ¾ for the pot.</li>
-      <li><b>Garlic:</b> crush 4 cloves.</li>
-      <li><b>Ventilation:</b> crack a window or run the hood — simmering vinegar is punchy for a few minutes.</li>
-    </ul>
-
-    <h3>Instructions</h3>
-
-    <h4>Step 1 — Sear hard <span class="cue">(in batches)</span></h4>
-    <ol>
-      <li>Heat <b>2 tbsp olive oil</b> in a large heavy pot or deep skillet over medium-high. Add <b>half the thighs skin-side down</b> and set a <b>weight on top</b> (a foil-wrapped heavy pan, a bacon press, a lid that fits inside) for the <b>entire browning time</b> — full, even contact is what gets uniformly crispy skin. Leave them alone until the skin is deeply golden and releases without a fight, <b>6–8 minutes</b>. Flip, remove the weight, and brown <b>2–3 minutes</b>. Transfer to a plate; repeat with the rest, lowering the heat a touch if the fond darkens past deep brown.</li>
-      <li>Don't rush or crowd this step — with no bones, the fond and rendered fat are doing all the sauce-building. <em>(While the chicken sears: thinly slice the tomatoes.)</em></li>
-      <li><em>Cooking for a crowd? Sequential batches get slow — <b>brown in two pans at once</b>, deglaze the second pan with a <b>splash of white wine</b> to capture its fond, then combine everything into one pot for Steps 2–3 and build the sauce there.</em></li>
-    </ol>
-
-    <h4>Step 2 — Aromatics in the fat</h4>
-    <ol>
-      <li>Reduce heat to medium. Add the <b>4 crushed garlic cloves</b> and <b>1½ tsp red pepper flakes</b> to the fat and sizzle <b>30–60 seconds</b>, until fragrant — don't let the garlic brown.</li>
-      <li>Scatter in the <b>¾ sliced onion</b> and cook, stirring and scraping up the fond, <b>2–3 minutes</b>, until slightly softened.</li>
-    </ol>
-
-    <h4>Step 3 — Quick braise</h4>
-    <ol>
-      <li>Return the chicken <b>skin-side up</b>, nestling the pieces together — keep the skin above the liquid line so it holds some crispness. Pour <b>½ cup white vinegar</b> and <b>⅓ cup chicken stock (or water)</b> <em>around</em> the chicken, not over it. Season the liquid with <b>salt, pepper, and a drizzle of olive oil</b>.</li>
-      <li>Simmer uncovered over medium-low <b>6–8 minutes</b>, until the thighs hit <b>175°F</b> and the sauce has thickened just enough to lightly coat a spoon — the sharp vinegar smell mellows as it's ready.</li>
-    </ol>
-
-    <h4>Step 4 — Build the platter <span class="cue">(while it simmers)</span></h4>
-    <ol>
-      <li>Arrange the <b>1 lb sliced tomatoes</b> and the <b>reserved raw onion</b> on a serving platter and <b>salt them now</b> — a few minutes' head start gets their juices weeping into what will become the sauce below.</li>
-    </ol>
-
-    <h4>Step 5 — Assemble</h4>
-    <ol>
-      <li>Taste the sauce. If it reads lean, swirl in <b>1 tbsp butter</b> off heat — it stands in for the fat the bones and extra skin would have given. Adjust salt.</li>
-      <li>Set the chicken on the tomatoes with tongs, then spoon the sauce and onions over everything. Finish with <b>a drizzle of olive oil, flaky salt, more pepper flakes, and black pepper</b>. Bread alongside.</li>
-    </ol>
-
-    <h3>Tips</h3>
-    <ul class="plain">
-      <li><b>The whole trick</b> is hot, rich, spicy-sour sauce hitting cold raw tomatoes — an excellent two-for-one chicken and salad. Don't skip salting the tomatoes early.</li>
-      <li><b>Tomato season rules this dish:</b> in winter, use the best cherry tomatoes you can find, halved.</li>
-      <li><b>Leftovers are delicious, just demoted:</b> the flavor holds beautifully, but the skin loses its crisp. Store chicken and sauce separately from any surviving tomatoes; re-crisp the skin in a dry skillet, or slice the chicken cold over fresh tomatoes tomorrow.</li>
-      <li><b>The bones you saved</b> go in a freezer bag toward the next batch of stock — which can then be the ⅓ cup in this very sauce.</li>
-      <li><b>Heat scales</b> cleanly through the pepper flakes; 1½ tsp is a medium rumble.</li>
-    </ul>
-
-    <p class="attr">From Alison Roman's Spicy Vinegar Chicken over Tomatoes. Changes: boneless skin-on thighs (2¼–2½ lb vs 3½–4 lb bone-in), weighted sear for even crispy skin, two-pan crowd method with a wine deglaze, water swapped for stock, optional butter finish, tomatoes salted ahead, braise shortened to match the cut.</p>
-  `
-};
-// ====================================================================
-
-const COLS = [
-  { key: "name",       label: "Recipe",      type: "str" },
-  { key: "time",       label: "Time",        type: "num" },
-  { key: "effort",     label: "Effort",      type: "num" },
-  { key: "rating",     label: "Etty Rating", type: "num" },
-  { key: "status",     label: "Status",      type: "status" },
-  { key: "lastCooked", label: "Last cooked", type: "date" },
-  { key: "timesCooked",label: "Cooks",       type: "num" },
-  { key: "_open",      label: "",            type: "none" }
-];
-const STATUS_ORDER = ["Workshopping", "Ready to cook", "Cooked & rated", "Keeper"];
-let sortKey = "rating", sortDir = -1;
-
-function stars(r) {
-  if (r == null) return '<span class="unrated">awaiting the Etty treatment</span>';
-  const full = Math.floor(r), half = r % 1 >= 0.5;
-  const rest = 5 - full - (half ? 1 : 0);
-  return '<span class="stars">' + "★".repeat(full) + (half ? "½" : "") +
-    '<span class="empty">' + "★".repeat(rest) + '</span></span>' +
-    '<span class="rating-num">' + r.toFixed(1) + "</span>";
-}
-function effortDots(e) {
-  return '<span class="effort-dots" title="Effort ' + e + ' of 5">' +
-    "●".repeat(e) + '<span class="off">' + "●".repeat(5 - e) + "</span></span>";
-}
-function statusBadge(s) {
-  const cls = s === "Keeper" ? "keeper" : s === "Ready to cook" ? "ready" : "";
-  return '<span class="badge ' + cls + '">' + (s === "Keeper" ? "Keeper 🏅" : s) + "</span>";
-}
-function fmtDate(d) {
-  if (!d) return '<span class="unrated">—</span>';
-  return new Date(d + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
-}
-function esc(t){ const d=document.createElement("div"); d.textContent=t??""; return d.innerHTML; }
-
-function buildFilters() {
-  const fill = (id, vals) => {
-    const sel = document.getElementById(id);
-    [...new Set(vals)].sort().forEach(v => {
-      const o = document.createElement("option"); o.value = v; o.textContent = v; sel.appendChild(o);
+  function matches(r){
+    if(filter === 'All') return true;
+    if(filter === 'Keepers') return r.status === 'Keeper';
+    if(filter === 'Veg') return r.protein.startsWith('Veg');
+    return r.protein === filter;
+  }
+
+  function sorted(list){
+    const s = [...list];
+    const cmpName = (a,b)=>a.name.localeCompare(b.name);
+    if(sortBy==='rating') s.sort((a,b)=>(b.rating??-1)-(a.rating??-1)||cmpName(a,b));
+    else if(sortBy==='quick') s.sort((a,b)=>a.minutes-b.minutes||cmpName(a,b));
+    else if(sortBy==='effort') s.sort((a,b)=>a.effort-b.effort||a.minutes-b.minutes);
+    else if(sortBy==='recent') s.sort((a,b)=>(b.lastCooked||'').localeCompare(a.lastCooked||'')||cmpName(a,b));
+    else s.sort(cmpName);
+    return s;
+  }
+
+  function render(){
+    const list = sorted(recipes.filter(matches));
+    $('count').textContent = list.length + (list.length===1?' recipe':' recipes');
+    const host = $('cards');
+    host.innerHTML = '';
+    if(!list.length){
+      host.innerHTML = '<div class="empty">No recipes match — clear the filters and browse the whole box.</div>';
+      return;
+    }
+    for(const r of list){
+      const el = document.createElement('button');
+      el.className = 'card';
+      el.setAttribute('data-cuisine', r.cuisine);
+      const st = stars(r.rating);
+      el.innerHTML =
+        '<div>' +
+          '<h2>' + r.name + '</h2>' +
+          '<div class="meta">' +
+            '<span>⏱ <b>' + r.timeLabel + '</b></span>' +
+            '<span>effort <b>' + r.effort + '/5</b></span>' +
+            '<span>serves <b>' + r.serves + '</b></span>' +
+            (r.timesCooked ? '<span>cooked <b>' + r.timesCooked + '×</b></span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="stamp' + (st?'':' unrated') + '">' + (st || 'awaiting first cook') + '</div>' +
+        '<div class="badges">' + badge(r.status) +
+          (r.leftovers ? '<span class="badge">leftovers: ' + r.leftovers.replace(/\s*\(.*\)/,'') + '</span>' : '') +
+        '</div>';
+      el.addEventListener('click', ()=>open(r));
+      host.appendChild(el);
+    }
+  }
+
+  async function open(r){
+    $('mtitle').textContent = r.name;
+    $('mbody').innerHTML = '<div class="loading">Pulling the card…</div>';
+    $('modal').showModal();
+    try{
+      let md = mdCache[r.slug];
+      if(!md){
+        const res = await fetch('recipes/' + r.slug + '.md' + bust(), {cache:'no-store'});
+        if(!res.ok) throw new Error(res.status);
+        md = await res.text();
+        mdCache[r.slug] = md;
+      }
+      $('mbody').innerHTML = marked.parse(md);
+      $('mbody').querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.disabled = false; });
+      $('mbody').querySelectorAll('a').forEach(a=>{
+        const href = a.getAttribute('href')||'';
+        if(/^https?:/.test(href)){ a.target='_blank'; a.rel='noopener'; }
+      });
+    }catch(e){
+      $('mbody').innerHTML = '<div class="loading">Couldn\u2019t load this recipe. Check your connection and reopen the card.</div>';
+    }
+  }
+
+  $('close').addEventListener('click', ()=>$('modal').close());
+  $('modal').addEventListener('click', e=>{ if(e.target === $('modal')) $('modal').close(); });
+
+  const chipsHost = $('chips');
+  for(const f of FILTERS){
+    const c = document.createElement('button');
+    c.className = 'chip' + (f===filter?' on':'');
+    c.textContent = f;
+    c.addEventListener('click', ()=>{
+      filter = f;
+      chipsHost.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on', x.textContent===f));
+      render();
     });
-  };
-  fill("f-cuisine", RECIPES.map(r => r.cuisine));
-  fill("f-protein", RECIPES.map(r => r.protein));
-  const ss = document.getElementById("f-status");
-  STATUS_ORDER.filter(s => RECIPES.some(r => r.status === s)).forEach(s => {
-    const o = document.createElement("option"); o.value = s; o.textContent = s; ss.appendChild(o);
-  });
-}
-
-function filtered() {
-  const q = document.getElementById("q").value.toLowerCase();
-  const c = document.getElementById("f-cuisine").value;
-  const p = document.getElementById("f-protein").value;
-  const s = document.getElementById("f-status").value;
-  const e = document.getElementById("f-effort").value;
-  const t = document.getElementById("f-time").value;
-  return RECIPES.filter(r =>
-    (!q || (r.name + " " + r.cuisine + " " + r.protein + " " + (r.nextTime||"")).toLowerCase().includes(q)) &&
-    (!c || r.cuisine === c) && (!p || r.protein === p) && (!s || r.status === s) &&
-    (!e || r.effort <= +e) && (!t || r.time <= +t)
-  );
-}
-
-function render() {
-  const head = document.getElementById("head");
-  head.innerHTML = COLS.map(col =>
-    '<th data-key="' + col.key + '">' + col.label +
-    (sortKey === col.key ? '<span class="arrow">' + (sortDir === 1 ? "▲" : "▼") + "</span>" : "") + "</th>"
-  ).join("");
-  head.querySelectorAll("th").forEach(th => th.onclick = () => {
-    const k = th.dataset.key;
-    const col = COLS.find(c => c.key === k);
-    if (col.type === "none") return;
-    if (sortKey === k) sortDir *= -1; else { sortKey = k; sortDir = col.type === "str" ? 1 : -1; }
-    render();
-  });
-
-  const col = COLS.find(c => c.key === sortKey);
-  const rows = filtered().sort((a, b) => {
-    let av = a[sortKey], bv = b[sortKey];
-    if (col.type === "status") { av = STATUS_ORDER.indexOf(av); bv = STATUS_ORDER.indexOf(bv); }
-    if (av == null && bv == null) return 0;
-    if (av == null) return 1;
-    if (bv == null) return -1;
-    if (col.type === "str") return String(av).localeCompare(String(bv)) * sortDir;
-    if (col.type === "date") return (new Date(av) - new Date(bv)) * sortDir;
-    return (av - bv) * sortDir;
-  });
-
-  document.getElementById("body").innerHTML = rows.map(r =>
-    '<tr data-id="' + r.id + '" title="Double-click to open recipe">' +
-    "<td><div class='r-name'>" + esc(r.name) + "</div><div class='r-meta'>" +
-      esc(r.cuisine) + " · " + esc(r.protein) + " · serves " + r.serves + "</div></td>" +
-    '<td class="num">' + r.time + " min" + (r.timeNote ? "<div class='r-meta'>" + r.timeNote + "</div>" : "") + "</td>" +
-    "<td>" + effortDots(r.effort) + "</td>" +
-    "<td>" + stars(r.rating) + "</td>" +
-    "<td>" + statusBadge(r.status) + "</td>" +
-    '<td class="num">' + fmtDate(r.lastCooked) + "</td>" +
-    '<td class="num">' + r.timesCooked + "</td>" +
-    '<td><button class="open-btn" data-open="' + r.id + '">Open</button></td>' +
-    "</tr>"
-  ).join("");
-
-  document.getElementById("body").querySelectorAll("tr").forEach(tr => {
-    tr.addEventListener("dblclick", () => openRecipe(tr.dataset.id));
-  });
-  document.getElementById("body").querySelectorAll("[data-open]").forEach(btn => {
-    btn.addEventListener("click", ev => { ev.stopPropagation(); openRecipe(btn.dataset.open); });
-  });
-
-  document.getElementById("empty").style.display = rows.length ? "none" : "block";
-  document.getElementById("tbl").style.display = rows.length ? "" : "none";
-  document.getElementById("count").textContent = rows.length + " of " + RECIPES.length + " recipe" + (RECIPES.length === 1 ? "" : "s");
-
-  const rated = RECIPES.filter(r => r.rating != null);
-  const avg = rated.length ? (rated.reduce((s, r) => s + r.rating, 0) / rated.length).toFixed(1) : "—";
-  const keepers = RECIPES.filter(r => r.status === "Keeper").length;
-  const totalCooks = RECIPES.reduce((s, r) => s + r.timesCooked, 0);
-  document.getElementById("tiles").innerHTML =
-    tile("Recipes", RECIPES.length, "in the library") +
-    tile("Keepers", keepers, "proven & in rotation") +
-    tile("Avg Etty Rating", avg, rated.length ? "across " + rated.length + " rated" : "no cooks rated yet") +
-    tile("Cooks logged", totalCooks, "experiments so far");
-}
-function tile(label, value, note) {
-  return '<div class="tile"><div class="label">' + label + '</div><div class="value">' + value + '</div><div class="note">' + note + "</div></div>";
-}
-
-function openRecipe(id) {
-  const r = RECIPES.find(x => x.id === id);
-  const body = RECIPE_BODIES[id];
-  if (!r || !body) return;
-  document.getElementById("m-title").textContent = r.name;
-  document.getElementById("m-facts").innerHTML =
-    "Serves <b>" + r.serves + "</b> · <b>" + r.time + " min</b>" + (r.timeNote ? " (" + r.timeNote + ")" : " total") + " · effort " + effortDots(r.effort) +
-    " · " + statusBadge(r.status) + (r.rating != null ? " · " + stars(r.rating) : "");
-  let logHtml = "";
-  if (r.log && r.log.length) {
-    logHtml = "<h3>📓 Etty's log</h3>" + r.log.slice().reverse().map(e =>
-      '<div class="elog"><div class="elog-meta">' + fmtDate(e.date) +
-      (e.stars ? ' · <span class="stars">' + "★".repeat(e.stars) + "</span>" : "") + "</div>" +
-      '<div class="elog-note">' + esc(e.note) + "</div></div>"
-    ).join("");
+    chipsHost.appendChild(c);
   }
-  document.getElementById("m-body").innerHTML = body + logHtml +
-    '<div class="modal-log">✍️ <b>Made it?</b> Tell Etty how it went — stars, real cook time, and any tweaks. She keeps the box honest.</div>';
-  document.getElementById("overlay").classList.add("on");
-  document.querySelector(".modal").scrollTop = 0;
-}
-function closeRecipe() { document.getElementById("overlay").classList.remove("on"); }
+  $('sort').addEventListener('change', e=>{ sortBy = e.target.value; render(); });
 
-document.getElementById("m-close").addEventListener("click", closeRecipe);
-document.getElementById("overlay").addEventListener("click", ev => { if (ev.target === document.getElementById("overlay")) closeRecipe(); });
-document.addEventListener("keydown", ev => { if (ev.key === "Escape") closeRecipe(); });
-
-buildFilters();
-["q","f-cuisine","f-protein","f-status","f-effort","f-time"].forEach(id =>
-  document.getElementById(id).addEventListener("input", render));
-document.getElementById("clear").onclick = () => {
-  ["q","f-cuisine","f-protein","f-status","f-effort","f-time"].forEach(id => document.getElementById(id).value = "");
-  render();
-};
-render();
+  fetch('recipes.json' + bust(), {cache:'no-store'})
+    .then(r=>r.json())
+    .then(data=>{ recipes = data.recipes; render(); })
+    .catch(()=>{ $('cards').innerHTML = '<div class="empty">The box didn\u2019t open — recipes.json failed to load. Refresh to try again.</div>'; });
+})();
 </script>
 </body>
 </html>
