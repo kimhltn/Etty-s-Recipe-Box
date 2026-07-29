@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etty's Recipe Box</title>
+<meta name="description" content="Etty's recipe box — nothing gets stars Etty didn't earn at the stove.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Karla:wght@400;500;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<style>
+  :root{
+    --paper:#F5F4EF;
+    --card:#FDFCF9;
+    --ink:#20241F;
+    --ink-soft:#5A6055;
+    --green:#2E5E43;
+    --green-deep:#1E4230;
+    --green-wash:#E7EEE7;
+    --gold:#A87A16;
+    --tomato:#B0402F;
+    --line:#DAD8CD;
+    --shadow:0 1px 2px rgba(32,36,31,.06),0 6px 18px rgba(32,36,31,.07);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Karla',system-ui,sans-serif;font-size:16px;line-height:1.55;
+  }
+  a{color:var(--green)}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px 80px}
+
+  /* ---------- header ---------- */
+  header{padding:52px 0 8px;text-align:center}
+  .eyebrow{
+    font-family:'Spline Sans Mono',monospace;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--green);font-weight:600;
+  }
+  h1.site{
+    font-family:'Fraunces',serif;font-weight:700;font-size:clamp(38px,7vw,58px);
+    margin:10px 0 6px;letter-spacing:-.01em;color:var(--green-deep);
+  }
+  .tagline{color:var(--ink-soft);max-width:46ch;margin:0 auto;font-size:16.5px}
+  .rule{
+    display:flex;align-items:center;gap:12px;margin:30px 0 22px;color:var(--line);
+  }
+  .rule::before,.rule::after{content:"";flex:1;border-top:1px solid var(--line)}
+  .rule span{font-family:'Spline Sans Mono',monospace;font-size:11px;letter-spacing:.16em;color:var(--ink-soft)}
+
+  /* ---------- controls ---------- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font-family:'Spline Sans Mono',monospace;font-size:12.5px;font-weight:500;
+    padding:7px 13px;border:1px solid var(--line);border-radius:999px;background:var(--card);
+    color:var(--ink-soft);cursor:pointer;transition:all .15s ease;
+  }
+  .chip:hover{border-color:var(--green);color:var(--green)}
+  .chip.on{background:var(--green);border-color:var(--green);color:#fff}
+  select{
+    font-family:'Spline Sans Mono',monospace;font-size:12.5px;padding:8px 10px;
+    border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);
+  }
+  :is(.chip,select,button):focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  /* ---------- recipe cards ---------- */
+  .cards{display:flex;flex-direction:column;gap:14px}
+  .card{
+    position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);cursor:pointer;padding:18px 20px 16px;
+    display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;
+    transition:transform .15s ease,border-color .15s ease;text-align:left;width:100%;
+    font:inherit;color:inherit;
+  }
+  .card:hover{transform:translateY(-2px);border-color:var(--green)}
+  .card > div:first-child{grid-column:1;grid-row:1}
+  .card::before{ /* index-card tab */
+    content:attr(data-cuisine);
+    position:absolute;top:-9px;left:16px;background:var(--green-wash);color:var(--green-deep);
+    border:1px solid var(--line);border-bottom-color:var(--green-wash);border-radius:6px 6px 0 0;
+    font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;padding:2px 9px 1px;
+  }
+  .card h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:21px;margin:6px 0 2px;
+    color:var(--ink);letter-spacing:-.005em;
+  }
+  .meta{
+    font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;gap:4px 14px;
+  }
+  .meta b{color:var(--ink);font-weight:600}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;grid-column:1 / -1}
+  .badge{
+    font-family:'Spline Sans Mono',monospace;font-size:10.5px;letter-spacing:.06em;
+    padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--ink-soft);
+  }
+  .badge.keeper{border-color:var(--tomato);color:var(--tomato);font-weight:600}
+  .badge.ready{border-color:var(--green);color:var(--green)}
+
+  /* the stamp — signature element */
+  .stamp{
+    grid-column:2;grid-row:1 / span 2;align-self:center;justify-self:end;
+    font-family:'Spline Sans Mono',monospace;font-weight:600;font-size:15px;
+    color:var(--gold);border:2px solid currentColor;border-radius:8px;
+    padding:6px 10px;transform:rotate(-4deg);letter-spacing:.02em;white-space:nowrap;
+    opacity:.92;
+  }
+  .stamp.unrated{color:var(--line);border-style:dashed;font-weight:400;transform:rotate(-2deg)}
+
+  .empty{text-align:center;color:var(--ink-soft);padding:48px 0;font-family:'Spline Sans Mono',monospace;font-size:13px}
+
+  /* ---------- modal ---------- */
+  dialog{
+    border:none;border-radius:14px;padding:0;background:var(--card);color:var(--ink);
+    width:min(760px,94vw);max-height:92vh;box-shadow:0 24px 80px rgba(32,36,31,.35);
+  }
+  dialog::backdrop{background:rgba(30,42,32,.55);backdrop-filter:blur(2px)}
+  .modal-bar{
+    position:sticky;top:0;display:flex;justify-content:space-between;align-items:center;
+    background:var(--green-deep);color:#fff;padding:12px 18px;z-index:2;
+  }
+  .modal-bar .mtitle{font-family:'Fraunces',serif;font-size:17px;font-weight:600;padding-right:12px}
+  .modal-bar button{
+    background:transparent;border:1px solid rgba(255,255,255,.45);color:#fff;border-radius:8px;
+    font-family:'Spline Sans Mono',monospace;font-size:12px;padding:6px 12px;cursor:pointer;
+  }
+  .modal-bar button:hover{background:rgba(255,255,255,.12)}
+  .recipe-body{padding:10px 28px 40px;overflow-wrap:break-word}
+
+  /* rendered markdown */
+  .recipe-body h1{font-family:'Fraunces',serif;font-size:30px;font-weight:700;color:var(--green-deep);margin:22px 0 6px;letter-spacing:-.01em}
+  .recipe-body h2{font-family:'Fraunces',serif;font-size:21px;font-weight:600;margin:30px 0 8px;color:var(--green-deep)}
+  .recipe-body h3{font-family:'Karla',sans-serif;font-size:16px;font-weight:700;margin:22px 0 6px;
+    padding-left:10px;border-left:3px solid var(--green)}
+  .recipe-body p{margin:10px 0}
+  .recipe-body hr{border:none;border-top:1px solid var(--line);margin:26px 0}
+  .recipe-body li{margin:6px 0}
+  .recipe-body input[type=checkbox]{
+    accent-color:var(--green);width:17px;height:17px;margin-right:8px;vertical-align:-3px;cursor:pointer;
+  }
+  .recipe-body li:has(input:checked){color:var(--ink-soft);text-decoration:line-through;text-decoration-color:var(--line)}
+  .recipe-body ul{padding-left:22px}
+  .recipe-body ul li:has(input){list-style:none;margin-left:-22px}
+  .recipe-body strong{color:var(--green-deep)}
+  .recipe-body em{color:var(--ink-soft)}
+  .recipe-body code{font-family:'Spline Sans Mono',monospace;font-size:.88em;background:var(--green-wash);padding:1px 5px;border-radius:4px}
+  .recipe-body blockquote{margin:12px 0;padding:2px 16px;border-left:3px solid var(--gold);color:var(--ink-soft)}
+  .loading{padding:60px 0;text-align:center;font-family:'Spline Sans Mono',monospace;font-size:13px;color:var(--ink-soft)}
+
+  footer{
+    margin-top:64px;text-align:center;color:var(--ink-soft);font-size:15px;
+  }
+  footer .fmark{font-family:'Fraunces',serif;font-size:18px;color:var(--green-deep);font-weight:600;margin-bottom:4px}
+
+  @media (max-width:560px){
+    header{padding-top:36px}
+    .card{grid-template-columns:1fr;padding:16px}
+    .stamp{grid-column:1;grid-row:auto;justify-self:start;margin-top:8px}
+    dialog{width:100vw;max-width:100vw;max-height:100vh;height:100vh;border-radius:0;margin:0}
+    .recipe-body{padding:6px 18px 60px}
+    .controls{flex-direction:column;align-items:stretch}
+    select{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">From Etty's kitchen</div>
+    <h1 class="site">Etty's Recipe Box</h1>
+    <p class="tagline">Welcome to Etty's recipe box — nothing gets stars Etty didn't earn at the stove. Open a card and cook straight from your phone.</p>
+  </header>
+
+  <div class="rule"><span id="count"></span></div>
+
+  <div class="controls">
+    <div class="chips" id="chips" role="group" aria-label="Filter recipes"></div>
+    <select id="sort" aria-label="Sort recipes">
+      <option value="rating">Sort: Etty Rating</option>
+      <option value="quick">Sort: Quickest first</option>
+      <option value="effort">Sort: Least effort</option>
+      <option value="recent">Sort: Recently cooked</option>
+      <option value="mostcooked">Sort: Most cooked</option>
+      <option value="cuisine">Sort: Cuisine</option>
+      <option value="protein">Sort: Protein</option>
+      <option value="status">Sort: Status</option>
+      <option value="name">Sort: A–Z</option>
+    </select>
+  </div>
+
+  <div class="cards" id="cards" aria-live="polite"></div>
+
+  <footer>
+    <div class="fmark">Made it? Tell Etty how it went.</div>
+    <div>Every star on this page was earned at the stove.</div>
+  </footer>
+</div>
+
+<dialog id="modal" aria-label="Recipe">
+  <div class="modal-bar">
+    <span class="mtitle" id="mtitle"></span>
+    <button id="close" type="button">Close ✕</button>
+  </div>
+  <div class="recipe-body" id="mbody"></div>
+</dialog>
+
+<script>
+(function(){
+  const bust = () => '?v=' + Date.now();
+  const FILTERS = ['All','Chicken','Fish','Veg','Lamb','Keepers'];
+  let recipes = [], filter = 'All', sortBy = 'rating';
+  const mdCache = {};
+
+  const $ = id => document.getElementById(id);
+
+  function stars(r){
+    if(r == null) return null;
+    const full = Math.floor(r), half = r % 1 >= 0.5;
+    return '★'.repeat(full) + (half ? '½' : '') + ' ' + r.toFixed(1);
+  }
+
+  function badge(status){
+    if(status === 'Keeper') return '<span class="badge keeper">Keeper</span>';
+    if(status === 'Ready to cook') return '<span class="badge ready">Ready to cook</span>';
+    if(status === 'Workshopping') return '<span class="badge">In the workshop</span>';
+    return '<span class="badge">Cooked &amp; rated</span>';
+  }
+
+  function matches(r){
+    if(filter === 'All') return true;
+    if(filter === 'Keepers') return r.status === 'Keeper';
+    if(filter === 'Veg') return r.protein.startsWith('Veg');
+    return r.protein === filter;
+  }
+
+  function sorted(list){
+    const s = [...list];
+    const cmpName = (a,b)=>a.name.localeCompare(b.name);
+    const STATUS_ORDER = {'Keeper':0,'Cooked & rated':1,'Ready to cook':2,'Workshopping':3};
+    if(sortBy==='rating') s.sort((a,b)=>(b.rating??-1)-(a.rating??-1)||cmpName(a,b));
+    else if(sortBy==='quick') s.sort((a,b)=>a.minutes-b.minutes||cmpName(a,b));
+    else if(sortBy==='effort') s.sort((a,b)=>a.effort-b.effort||a.minutes-b.minutes);
+    else if(sortBy==='recent') s.sort((a,b)=>(b.lastCooked||'').localeCompare(a.lastCooked||'')||cmpName(a,b));
+    else if(sortBy==='mostcooked') s.sort((a,b)=>b.timesCooked-a.timesCooked||(b.rating??-1)-(a.rating??-1)||cmpName(a,b));
+    else if(sortBy==='cuisine') s.sort((a,b)=>a.cuisine.localeCompare(b.cuisine)||cmpName(a,b));
+    else if(sortBy==='protein') s.sort((a,b)=>a.protein.localeCompare(b.protein)||cmpName(a,b));
+    else if(sortBy==='status') s.sort((a,b)=>(STATUS_ORDER[a.status]??9)-(STATUS_ORDER[b.status]??9)||(b.rating??-1)-(a.rating??-1)||cmpName(a,b));
+    else s.sort(cmpName);
+    return s;
+  }
+
+  function render(){
+    const list = sorted(recipes.filter(matches));
+    $('count').textContent = list.length + (list.length===1?' recipe':' recipes');
+    const host = $('cards');
+    host.innerHTML = '';
+    if(!list.length){
+      host.innerHTML = '<div class="empty">No recipes match — clear the filters and browse the whole box.</div>';
+      return;
+    }
+    for(const r of list){
+      const el = document.createElement('button');
+      el.className = 'card';
+      el.setAttribute('data-cuisine', r.cuisine);
+      const st = stars(r.rating);
+      el.innerHTML =
+        '<div>' +
+          '<h2>' + r.name + '</h2>' +
+          '<div class="meta">' +
+            '<span>⏱ <b>' + r.timeLabel + '</b></span>' +
+            '<span>effort <b>' + r.effort + '/5</b></span>' +
+            '<span>serves <b>' + r.serves + '</b></span>' +
+            (r.timesCooked ? '<span>cooked <b>' + r.timesCooked + '×</b></span>' : '') +
+          '</div>' +
+        '</div>' +
+        '<div class="stamp' + (st?'':' unrated') + '">' + (st || 'awaiting first cook') + '</div>' +
+        '<div class="badges">' + badge(r.status) +
+          (r.leftovers ? '<span class="badge">leftovers: ' + r.leftovers.replace(/\s*\(.*\)/,'') + '</span>' : '') +
+        '</div>';
+      el.addEventListener('click', ()=>open(r));
+      host.appendChild(el);
+    }
+  }
+
+  async function open(r){
+    $('mtitle').textContent = r.name;
+    $('mbody').innerHTML = '<div class="loading">Pulling the card…</div>';
+    $('modal').showModal();
+    try{
+      let md = mdCache[r.slug];
+      if(!md){
+        const res = await fetch('recipes/' + r.slug + '.md' + bust(), {cache:'no-store'});
+        if(!res.ok) throw new Error(res.status);
+        md = await res.text();
+        mdCache[r.slug] = md;
+      }
+      $('mbody').innerHTML = marked.parse(md);
+      $('mbody').querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.disabled = false; });
+      $('mbody').querySelectorAll('a').forEach(a=>{
+        const href = a.getAttribute('href')||'';
+        if(/^https?:/.test(href)){ a.target='_blank'; a.rel='noopener'; }
+      });
+    }catch(e){
+      $('mbody').innerHTML = '<div class="loading">Couldn\u2019t load this recipe. Check your connection and reopen the card.</div>';
+    }
+  }
+
+  $('close').addEventListener('click', ()=>$('modal').close());
+  $('modal').addEventListener('click', e=>{ if(e.target === $('modal')) $('modal').close(); });
+
+  const chipsHost = $('chips');
+  for(const f of FILTERS){
+    const c = document.createElement('button');
+    c.className = 'chip' + (f===filter?' on':'');
+    c.textContent = f;
+    c.addEventListener('click', ()=>{
+      filter = f;
+      chipsHost.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on', x.textContent===f));
+      render();
+    });
+    chipsHost.appendChild(c);
+  }
+  $('sort').addEventListener('change', e=>{ sortBy = e.target.value; render(); });
+
+  fetch('recipes.json' + bust(), {cache:'no-store'})
+    .then(r=>r.json())
+    .then(data=>{ recipes = data.recipes; render(); })
+    .catch(()=>{ $('cards').innerHTML = '<div class="empty">The box didn\u2019t open — recipes.json failed to load. Refresh to try again.</div>'; });
+})();
+</script>
+</body>
+</html>
