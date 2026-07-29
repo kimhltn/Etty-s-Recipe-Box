@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-23",
+  "updated": "2026-07-29",
   "recipes": [
     {
       "slug": "caldo-de-pollo-con-arroz",
@@ -150,6 +150,21 @@
       "timesCooked": 0,
       "serves": "1 (scales)",
       "leftovers": null
+    },
+    {
+      "slug": "ragu-alla-bolognese",
+      "name": "Rag\u00f9 alla Bolognese",
+      "cuisine": "Italian",
+      "protein": "Beef",
+      "timeLabel": "~4 hr (40 min active)",
+      "minutes": 240,
+      "effort": 2,
+      "rating": null,
+      "status": "Ready to cook",
+      "lastCooked": null,
+      "timesCooked": 0,
+      "serves": "4",
+      "leftovers": "Great (sauce keeps 4\u20135 days; fresh pasta per meal)"
     }
   ]
 }
