@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-29",
+  "updated": "2026-08-29",
   "recipes": [
     {
       "slug": "caldo-de-pollo-con-arroz",
@@ -158,13 +158,28 @@
       "protein": "Beef",
       "timeLabel": "~4 hr (40 min active)",
       "minutes": 240,
-      "effort": 2,
-      "rating": null,
-      "status": "Ready to cook",
-      "lastCooked": null,
-      "timesCooked": 0,
+      "effort": 3,
+      "rating": 3.0,
+      "status": "Cooked & rated",
+      "lastCooked": "2026-08-09",
+      "timesCooked": 1,
       "serves": "4",
       "leftovers": "Great (sauce keeps 4\u20135 days; fresh pasta per meal)"
+    },
+    {
+      "slug": "spaghetti-garlic-jalapeno-lemon-crumbs",
+      "name": "Spaghetti with Garlic, Jalape\u00f1o, Lemon & Sourdough Crumbs",
+      "cuisine": "Italian",
+      "protein": "Veg (anchovy)",
+      "timeLabel": "40 min",
+      "minutes": 40,
+      "effort": 3,
+      "rating": 5.0,
+      "status": "Cooked & rated",
+      "lastCooked": "2026-08-09",
+      "timesCooked": 1,
+      "serves": "4",
+      "leftovers": "Poor (serve immediately; crumbs keep in a jar)"
     }
   ]
 }
