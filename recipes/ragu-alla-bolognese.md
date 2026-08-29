@@ -1,6 +1,6 @@
 # Ragù alla Bolognese — Cook Mode
 
-*Plan-ahead note: the sauce wants 3+ hours at the laziest possible simmer — start by 5:30 to eat at 9:30, or cook it tonight and eat it tomorrow (it's genuinely better on day two). Sauce keeps 4–5 days in the fridge: cook a portion of fresh pasta per night and it's four dinners from one pot.*
+*Etty's verdict after the first cook: a genuinely great bolognese, but a punish to make — cook it on a day you're home anyway, not on a day you want dinner. Plan-ahead note: the sauce wants 3+ hours at the laziest possible simmer — start by 5:30 to eat at 9:30, or cook it tonight and eat it tomorrow (it's genuinely better on day two). Sauce keeps 4–5 days in the fridge: cook a portion of fresh pasta per night and it's four dinners from one pot.*
 
 **Serves:** 4 over pasta (solo: 4 nights of dinners) | **Active:** ~40 min | **Simmer:** 3–4 hr | **Total:** ~4 hr wall clock
 
@@ -81,6 +81,7 @@
 
 ## Cook Log
 
+- **2026-08-09** — ★★★ (3.0). First cook. "A great bolognese, but just a punish to make." The rating is the effort-to-payoff ratio, not the food: nothing went wrong, the method works, it tastes like it's supposed to. It's the four hours of babysitting three separate evaporations for a plate of pasta — "I've had better pastas that are better bang for buck." Staying in the box as the real-deal version for when the day suits it; not a weeknight proposition, and not the one to reach for when the goal is just a good bowl of pasta.
 - **Pre-log:** workshopped 2026-07-29 during a Melbourne winter week. Hazan's original at her own scale (serves 4 — four solo dinners), with two house upgrades approved: a parmesan rind in the simmer and tomato paste fried before the tomatoes go in. Fresh tagliatelle, cooked per meal. Awaiting first cook.
 
 ---
